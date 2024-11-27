@@ -12,6 +12,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const record = await request.json();
 
+  //バリデーション
   if (isRecord(record) && validateRecord(record)) {
     await agent.com.atproto.repo.putRecord({
       collection: "app.vercel.aniblue.status",
@@ -23,5 +24,5 @@ export const action: ActionFunction = async ({ request }) => {
     return json({ ok: true });
   }
 
-  return null;
+  return json({ ok: false });
 };

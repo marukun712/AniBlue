@@ -15,6 +15,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     rkey: "self",
   });
 
+  console.log(status.data.value);
+
   return { status };
 };
 

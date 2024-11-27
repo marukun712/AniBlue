@@ -1,5 +1,6 @@
 import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { Work } from "@types";
 import { AnimeCard } from "~/components/card/animeCard";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -25,7 +26,7 @@ export default function Search() {
 
   return (
     <div className="grid md:grid-cols-5 gap-8">
-      {result.works.map((item) => {
+      {result.works.map((item: Work["data"]) => {
         return (
           <AnimeCard
             key={item.id}

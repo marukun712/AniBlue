@@ -120,8 +120,11 @@ export default function AnimeDetails({ work }: { work: Work }) {
 
   const { id, title } = work.data;
   const imageUrl = work.data.images.recommended_url;
+
+  //すでにそのアニメに状態が保存されているか
   const prevState = animeState.find((anime) => anime.id === id);
 
+  //StateとPDS側の更新
   const updateAnimeState = async (newState: typeof animeState) => {
     setAnimeState(newState);
     await fetch("/api/status/update", {
@@ -135,6 +138,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
   };
 
   const handleStatusUpdate = async (status: Status) => {
+    //すでにそのアニメの状態が保存されていれば更新するだけ
     const newState = prevState
       ? animeState.map((item) => (item.id === id ? { ...item, status } : item))
       : [
@@ -150,6 +154,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
   };
 
   const handleEpisodeUpdate = async (episode: number) => {
+    //話数の更新
     const newState = animeState.map((item) =>
       item.id === id ? { ...item, episode_count: episode } : item
     );

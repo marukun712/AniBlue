@@ -19,7 +19,7 @@ export default function Home() {
 
   return (
     <div className="space-y-12">
-      {watching.length ? (
+      {watching.length > 0 && (
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">視聴中</h2>
           <ScrollArea className="w-full whitespace-nowrap rounded-md border">
@@ -39,11 +39,9 @@ export default function Home() {
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </section>
-      ) : (
-        <></>
       )}
 
-      {pending.length ? (
+      {pending.length > 0 && (
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">見たい</h2>
           <ScrollArea className="w-full whitespace-nowrap rounded-md border">
@@ -63,11 +61,9 @@ export default function Home() {
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </section>
-      ) : (
-        <></>
       )}
 
-      {watched.length ? (
+      {watched.length > 0 && (
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">視聴済み</h2>
           <ScrollArea className="w-full whitespace-nowrap rounded-md border">
@@ -87,8 +83,6 @@ export default function Home() {
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
         </section>
-      ) : (
-        <></>
       )}
     </div>
   );

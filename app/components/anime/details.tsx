@@ -181,7 +181,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
             </span>
           </div>
 
-          <div className="md:flex md:space-x-4 mb-8">
+          <div className="md:flex md:space-x-4 md:space-y-0 space-y-6 mb-8">
             <StatusButton
               icon={<Star className="w-4 h-4" />}
               label="見たい"

@@ -22,7 +22,7 @@ export function Header() {
         <a href="/home">
           <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
         </a>
-        <Form onSubmit={handleSubmit} className="w-1/4" method="get">
+        <Form onSubmit={handleSubmit} className="md:w-1/4" method="get">
           <Input placeholder="アニメ名で検索...." name="title" />
         </Form>
       </div>

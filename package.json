@@ -1,5 +1,5 @@
 {
-  "name": "atproto-anime",
+  "name": "aniblue",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -11,12 +11,27 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@atproto/api": "^0.13.18",
+    "@atproto/oauth-client-node": "^0.2.2",
+    "@prisma/client": "^5.22.0",
+    "@radix-ui/react-avatar": "^1.1.1",
+    "@radix-ui/react-scroll-area": "^1.2.1",
+    "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-tabs": "^1.1.1",
     "@remix-run/node": "^2.15.0",
     "@remix-run/react": "^2.15.0",
     "@remix-run/serve": "^2.15.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "iron-session": "^8.0.4",
     "isbot": "^4.1.0",
+    "lucide-react": "^0.461.0",
+    "prisma": "^5.22.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "recoil": "^0.7.7",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.15.0",

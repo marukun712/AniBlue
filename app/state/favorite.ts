@@ -1,7 +1,10 @@
 import { Favorite } from "@types";
-import { atom } from "recoil";
+import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 
-export const favoriteState = atom<Favorite[]>({
+export const favoriteStatus = atom<Favorite[]>({
   key: "favorite",
   default: [],
 });
+
+export const useFavorite = () => useRecoilValue(favoriteStatus);
+export const useSetFavorite = () => useSetRecoilState(favoriteStatus);

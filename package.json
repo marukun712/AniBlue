@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.13.18",
+    "@atproto/lex-cli": "^0.5.2",
     "@atproto/oauth-client-node": "^0.2.2",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-avatar": "^1.1.1",

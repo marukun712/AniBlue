@@ -25,15 +25,15 @@ export default function Search() {
 
   return (
     <div className="grid md:grid-cols-5 gap-8">
-      {result.works.map((anime) => {
+      {result.works.map((item) => {
         return (
-          <a key={anime.title} href={`/home/details?id=${anime.id}`}>
-            <AnimeCard
-              title={anime.title}
-              image={anime.images.recommended_url}
-              status="視聴済み"
-            />
-          </a>
+          <AnimeCard
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            image={item.images.recommended_url}
+            status={null}
+          />
         );
       })}
     </div>

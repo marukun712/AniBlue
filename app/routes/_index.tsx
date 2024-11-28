@@ -8,15 +8,6 @@ import { LogIn } from "lucide-react";
 
 //ログイン処理
 export const action = async ({ request }: ActionFunctionArgs) => {
-  //Debug用
-  const res = await fetch(
-    "https://maril.pds.marukun-dev.com/.well-known/atproto-did"
-  );
-
-  const text = await res.text();
-
-  console.log(text);
-
   const formData = await request.formData();
   const handle = formData.get("handle");
   const client = await createClient();

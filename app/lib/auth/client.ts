@@ -1,16 +1,13 @@
 import { NodeOAuthClient } from "@atproto/oauth-client-node";
 import { SessionStore, StateStore } from "./storage";
-import { isProduction } from "~/utils/isProduction";
 
-export const createClient: () => Promise<NodeOAuthClient> = async () => {
+export const createClient = async () => {
   const publicUrl = process.env.PUBLIC_URL;
-
-  const url = isProduction ? publicUrl : "http://127.0.0.1:5173";
+  const url = publicUrl || `http://127.0.0.1:5173`;
   const enc = encodeURIComponent;
-
   return new NodeOAuthClient({
     clientMetadata: {
-      client_name: "aniblue",
+      client_name: "AT Protocol Express App",
       client_id: publicUrl
         ? `${url}/client-metadata.json`
         : `http://localhost?redirect_uri=${enc(
@@ -27,9 +24,5 @@ export const createClient: () => Promise<NodeOAuthClient> = async () => {
     },
     stateStore: new StateStore(),
     sessionStore: new SessionStore(),
-    plcDirectoryUrl: "https://plc.directory",
-
-    //@ts-expect-error
-    handleResolver: "https://public.api.bsky.app",
   });
 };

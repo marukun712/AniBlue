@@ -33,8 +33,8 @@ export interface Status {
   thumbnail?: string
   /** Current watching status of the anime */
   status: 'watching' | 'watched' | 'pending'
-  /** Current number of episode */
-  episode_count: number
+  /** Current number text of episode */
+  episode_text: string
   [k: string]: unknown
 }
 

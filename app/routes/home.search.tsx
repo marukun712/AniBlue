@@ -1,7 +1,7 @@
 import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { Work } from "@types";
-import { AnimeCard } from "~/components/card/animeCard";
+import { AnimeCard } from "~/components/details/card/animeCard";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -33,7 +33,6 @@ export default function Search() {
             id={item.id}
             title={item.title}
             image={item.images.recommended_url}
-            status={null}
           />
         );
       })}

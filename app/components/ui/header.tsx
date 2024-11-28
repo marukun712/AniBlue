@@ -19,7 +19,7 @@ export function Header() {
   return (
     <header className="bg-background border-b border-border">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <a href="/home">
+        <a href="/home/">
           <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
         </a>
         <Form onSubmit={handleSubmit} className="md:w-1/4" method="get">

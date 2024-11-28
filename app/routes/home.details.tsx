@@ -1,6 +1,6 @@
 import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import AnimeDetails from "~/components/anime/details";
+import AnimeDetails from "~/components/details/details";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);

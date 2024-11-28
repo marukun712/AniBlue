@@ -1,118 +1,15 @@
-import { AnimeStatus, Status, Work } from "@types";
+import { Status, Work } from "@types";
 import { Check, Eye, Heart, Star, Trash } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useAnimeState, useSetAnimeState } from "~/state/status";
-
-type StatusButtonProps = {
-  icon: React.ReactNode;
-  label: string;
-  status: Status;
-  isActive: boolean;
-  onClick: () => void;
-};
-
-const StatusButton = ({
-  icon,
-  label,
-  isActive,
-  onClick,
-}: StatusButtonProps) => (
-  <Button
-    variant="outline"
-    className={`flex items-center space-x-2 ${isActive ? "bg-green-500" : ""}`}
-    onClick={onClick}
-  >
-    {icon}
-    <span>{label}</span>
-  </Button>
-);
-
-const EpisodeList = ({
-  episodes,
-  currentEpisode,
-  onEpisodeUpdate,
-  prevState,
-}: {
-  episodes: Work["episodes"];
-  currentEpisode?: number;
-  onEpisodeUpdate: (episode: number) => void;
-  prevState: AnimeStatus | undefined;
-}) => (
-  <ul className="space-y-4">
-    {episodes.map((episode) => (
-      <li key={episode.id} className="border-b pb-4">
-        <div className="flex justify-between items-center">
-          <span className="font-medium">
-            {episode.number} {episode.title}
-          </span>
-          {currentEpisode === episode.number && (
-            <span className="font-bold">この回まで視聴しています</span>
-          )}
-
-          {prevState && (
-            <Button size="sm" onClick={() => onEpisodeUpdate(episode.number)}>
-              記録
-            </Button>
-          )}
-        </div>
-      </li>
-    ))}
-  </ul>
-);
-
-const CastList = ({ casts }: { casts: Work["casts"] }) => (
-  <ul className="grid grid-cols-2 gap-4">
-    {casts.map((cast) => (
-      <li key={cast.id} className="flex items-center space-x-2">
-        <div>
-          <p className="font-medium">{cast.name}</p>
-          <p className="text-sm text-gray-500">{cast.character.name}役</p>
-        </div>
-      </li>
-    ))}
-  </ul>
-);
-
-const StaffList = ({ staffs }: { staffs: Work["staffs"] }) => (
-  <ul className="space-y-6">
-    {staffs.map((staff) => (
-      <li key={staff.id}>
-        <span className="font-medium">{staff.role_text}:</span>
-        {staff.name}
-      </li>
-    ))}
-  </ul>
-);
-
-const AnimeInfo = ({ work }: { work: Work }) => (
-  <div>
-    <h3 className="font-bold mb-2">アニメ情報</h3>
-    <ul className="space-y-2 text-sm">
-      <li>
-        <span className="font-medium">放送時期:</span>
-        {work.data.season_name_text}
-      </li>
-      <li>
-        <span className="font-medium">エピソード数:</span>
-        {work.data.episodes_count || "なし"}
-      </li>
-      <li>
-        <span className="font-medium">公式サイト:</span>
-        {work.data.official_site_url && (
-          <a
-            href={work.data.official_site_url}
-            className="text-blue-600 hover:underline"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            リンク
-          </a>
-        )}
-      </li>
-    </ul>
-  </div>
-);
+import { Toaster } from "~/components/ui/toaster";
+import { useToast } from "~/hooks/use-toast";
+import StatusButton from "./button/statusButton";
+import EpisodeList from "./list/episodeList";
+import CastList from "./list/castList";
+import StaffList from "./list/staffList";
+import AnimeInfo from "./card/animeInfo";
 
 export default function AnimeDetails({ work }: { work: Work }) {
   const animeState = useAnimeState();
@@ -121,12 +18,23 @@ export default function AnimeDetails({ work }: { work: Work }) {
   const { id, title } = work.data;
   const imageUrl = work.data.images.recommended_url;
 
+  const { toast } = useToast();
+
   //すでにそのアニメに状態が保存されているか
   const prevState = animeState.find((anime) => anime.id === id);
 
-  //StateとPDS側の更新
+  const showToast = (title: string, description: string) => {
+    toast({
+      title,
+      description,
+    });
+  };
+
   const updateAnimeState = async (newState: typeof animeState) => {
+    //ローカルのstateを更新
     setAnimeState(newState);
+
+    //PDS側も更新
     await fetch("/api/status/update", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -143,31 +51,53 @@ export default function AnimeDetails({ work }: { work: Work }) {
       ? animeState.map((item) => (item.id === id ? { ...item, status } : item))
       : [
           ...animeState,
-          { id, title, thumbnail: imageUrl, status, episode_count: 0 },
+          { id, title, thumbnail: imageUrl, status, episode_text: "" },
         ];
     await updateAnimeState(newState);
+
+    let statusText;
+    switch (status) {
+      case "pending":
+        statusText = "見たい";
+        break;
+      case "watched":
+        statusText = "視聴済み";
+        break;
+      case "watching":
+        statusText = "視聴中";
+        break;
+    }
+
+    showToast(`記録を${statusText}に更新しました✅`, "");
   };
 
   const handleStatusRemove = async () => {
     const newState = animeState.filter((item) => item.id !== id);
     await updateAnimeState(newState);
+
+    showToast("記録が正常に削除されました。", "");
   };
 
-  const handleEpisodeUpdate = async (episode: number) => {
+  const handleEpisodeUpdate = async (episodeText: string) => {
     //話数の更新
     const newState = animeState.map((item) =>
-      item.id === id ? { ...item, episode_count: episode } : item
+      item.id === id ? { ...item, episode_text: episodeText } : item
     );
     await updateAnimeState(newState);
+
+    showToast("話数を更新しました✅", `話数を${episodeText}に更新しました。`);
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <img
-        src={imageUrl || "/no_image_yoko.jpg"}
-        alt={title || "No thumbnail available"}
-        className="py-12 w-full h-96 object-cover"
-      />
+      <Toaster />
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt={title || "No thumbnail available"}
+          className="py-12 w-full h-full"
+        />
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2">
@@ -234,7 +164,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
               <TabsContent value="episodes">
                 <EpisodeList
                   episodes={work.episodes}
-                  currentEpisode={prevState?.episode_count}
+                  currentEpisodeStatus={prevState?.episode_text}
                   onEpisodeUpdate={handleEpisodeUpdate}
                   prevState={prevState}
                 />

@@ -62,7 +62,7 @@ export const schemaDict = {
       },
       status: {
         type: 'object',
-        required: ['id', 'title', 'status', 'episode_count'],
+        required: ['id', 'title', 'status', 'episode_text'],
         properties: {
           id: {
             type: 'integer',
@@ -81,9 +81,9 @@ export const schemaDict = {
             description: 'Current watching status of the anime',
             enum: ['watching', 'watched', 'pending'],
           },
-          episode_count: {
-            type: 'integer',
-            description: 'Current number of episode',
+          episode_text: {
+            type: 'string',
+            description: 'Current number text of episode',
           },
         },
       },

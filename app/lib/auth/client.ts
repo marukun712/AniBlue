@@ -26,5 +26,9 @@ export const createClient: () => Promise<NodeOAuthClient> = async () => {
     },
     stateStore: new StateStore(),
     sessionStore: new SessionStore(),
+    plcDirectoryUrl: "https://plc.directory",
+
+    //@ts-expect-error
+    handleResolver: "https://public.api.bsky.app",
   });
 };

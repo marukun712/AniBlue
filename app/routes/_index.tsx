@@ -1,6 +1,6 @@
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, redirect } from "@vercel/remix";
 import { createClient } from "~/lib/auth/client";
 import { Form } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
@@ -8,17 +8,15 @@ import { LogIn } from "lucide-react";
 
 //ログイン処理
 export const action = async ({ request }: ActionFunctionArgs) => {
+  const client = await createClient();
+
   const formData = await request.formData();
   const handle = formData.get("handle");
-  const client = await createClient();
 
   if (typeof handle === "string") {
     const url = await client.authorize(handle, {
       scope: "atproto transition:generic",
     });
-
-    const ac = new AbortController();
-    req.on("close", () => req.complete || ac.abort());
 
     return redirect(url.toString());
   }

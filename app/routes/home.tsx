@@ -1,5 +1,5 @@
 import { Agent } from "@atproto/api";
-import { LoaderFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, redirect } from "@vercel/remix";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Header } from "~/components/ui/header";
 import { getSessionAgent } from "~/lib/auth/session";
@@ -35,7 +35,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   } catch (e) {
     console.log("No favorite record found");
   }
-  console.log(statusData?.data.value, favoriteData?.data.value);
 
   return { status: statusData, favorite: favoriteData };
 };

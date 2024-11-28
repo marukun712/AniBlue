@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@remix-run/node";
+import { LoaderFunctionArgs, redirect } from "@vercel/remix";
 import { getIronSession } from "iron-session";
 import { createClient } from "~/lib/auth/client";
 import { Session } from "~/lib/auth/session";

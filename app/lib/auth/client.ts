@@ -4,11 +4,9 @@ import { isProduction } from "~/utils/isProduction";
 
 export const createClient: () => Promise<NodeOAuthClient> = async () => {
   const publicUrl = process.env.PUBLIC_URL;
-  console.log(publicUrl);
 
   const url = isProduction ? publicUrl : "http://127.0.0.1:5173";
   const enc = encodeURIComponent;
-  console.log(url);
 
   return new NodeOAuthClient({
     clientMetadata: {

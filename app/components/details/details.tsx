@@ -1,4 +1,4 @@
-import { Status, Work } from "@types";
+import { AnimeStatus, Status, Work } from "@types";
 import { Check, Eye, Heart, Star, Trash } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -10,10 +10,14 @@ import EpisodeList from "./list/episodeList";
 import CastList from "./list/castList";
 import StaffList from "./list/staffList";
 import AnimeInfo from "./card/animeInfo";
+import { useFavorite, useSetFavorite } from "~/state/favorite";
 
 export default function AnimeDetails({ work }: { work: Work }) {
   const animeState = useAnimeState();
   const setAnimeState = useSetAnimeState();
+
+  const favorite = useFavorite();
+  const setFavoriteState = useSetFavorite();
 
   const { id, title } = work.data;
   const imageUrl = work.data.images.recommended_url;
@@ -23,6 +27,9 @@ export default function AnimeDetails({ work }: { work: Work }) {
   //すでにそのアニメに状態が保存されているか
   const prevState = animeState.find((anime) => anime.id === id);
 
+  //アニメのお気に入りの状態を取得
+  const favoriteState = favorite.find((anime) => anime.id === id);
+
   const showToast = (title: string, description: string) => {
     toast({
       title,
@@ -30,7 +37,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
     });
   };
 
-  const updateAnimeState = async (newState: typeof animeState) => {
+  const updateAnimeState = async (newState: AnimeStatus[]) => {
     //ローカルのstateを更新
     setAnimeState(newState);
 
@@ -41,6 +48,35 @@ export default function AnimeDetails({ work }: { work: Work }) {
       body: JSON.stringify({
         $type: "app.vercel.aniblue.status",
         status: newState,
+      }),
+    });
+  };
+
+  const updateFavorite = async () => {
+    let newState;
+
+    //すでにお気に入りに登録されていれば削除
+    if (favoriteState) {
+      newState = favorite.filter((item) => {
+        item.id !== id;
+      });
+
+      showToast(`お気に入りから削除しました`, "");
+    } else {
+      newState = [...favorite, { id }];
+      showToast(`お気に入りに追加しました✅`, "");
+    }
+
+    //ローカルのstateを更新
+    setFavoriteState(newState);
+
+    //PDS側も更新
+    await fetch("/api/favorite/update", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        $type: "app.vercel.aniblue.favorite",
+        favorites: newState,
       }),
     });
   };
@@ -145,7 +181,15 @@ export default function AnimeDetails({ work }: { work: Work }) {
               </Button>
             )}
 
-            <Button variant="outline" className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              className={
+                favoriteState
+                  ? "flex items-center space-x-2 bg-yellow-500"
+                  : "flex items-center space-x-2"
+              }
+              onClick={updateFavorite}
+            >
               <Heart className="w-4 h-4" />
               <span>お気に入り</span>
             </Button>

@@ -40,7 +40,6 @@ export default function Home() {
             </ScrollArea>
           </section>
         )}
-
         {pending.length > 0 && (
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">見たい</h2>
@@ -61,7 +60,6 @@ export default function Home() {
             </ScrollArea>
           </section>
         )}
-
         {watched.length > 0 && (
           <section className="space-y-4">
             <h2 className="text-2xl font-semibold">視聴済み</h2>

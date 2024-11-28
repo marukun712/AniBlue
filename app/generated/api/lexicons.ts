@@ -31,7 +31,7 @@ export const schemaDict = {
         required: ['id'],
         properties: {
           id: {
-            type: 'string',
+            type: 'integer',
             description: 'Annict API ID for the anime',
           },
         },

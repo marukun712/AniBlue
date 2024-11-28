@@ -26,7 +26,7 @@ export function validateRecord(v: unknown): ValidationResult {
 
 export interface Favorite {
   /** Annict API ID for the anime */
-  id: string
+  id: number
   [k: string]: unknown
 }
 

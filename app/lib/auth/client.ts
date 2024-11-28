@@ -2,7 +2,7 @@ import { NodeOAuthClient } from "@atproto/oauth-client-node";
 import { SessionStore, StateStore } from "./storage";
 import { isProduction } from "~/utils/isProduction";
 
-const createClient: () => Promise<NodeOAuthClient> = async () => {
+export const createClient: () => Promise<NodeOAuthClient> = async () => {
   const publicUrl = process.env.PUBLIC_URL;
   const url = isProduction ? publicUrl : "http://127.0.0.1:5173";
   const enc = encodeURIComponent;
@@ -28,5 +28,3 @@ const createClient: () => Promise<NodeOAuthClient> = async () => {
     sessionStore: new SessionStore(),
   });
 };
-
-export const client: NodeOAuthClient = await createClient();

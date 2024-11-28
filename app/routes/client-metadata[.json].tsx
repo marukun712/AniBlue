@@ -1,5 +1,8 @@
-import { client } from "~/lib/auth/client";
+import { json } from "@remix-run/node";
+import { createClient } from "~/lib/auth/client";
 
 export async function loader() {
-  return Response.json(client.clientMetadata);
+  const client = await createClient();
+
+  return json(client.clientMetadata);
 }

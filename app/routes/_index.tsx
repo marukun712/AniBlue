@@ -1,7 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { client } from "~/lib/auth/client";
+import { createClient } from "~/lib/auth/client";
 import { Form } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
 import { LogIn } from "lucide-react";
@@ -10,6 +10,7 @@ import { LogIn } from "lucide-react";
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const handle = formData.get("handle");
+  const client = await createClient();
 
   if (typeof handle === "string") {
     const url = await client.authorize(handle, {

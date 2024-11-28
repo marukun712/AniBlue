@@ -1,12 +1,13 @@
 import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { getIronSession } from "iron-session";
-import { client } from "~/lib/auth/client";
+import { createClient } from "~/lib/auth/client";
 import { Session } from "~/lib/auth/session";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const params = new URLSearchParams(url.search);
   const response = new Response();
+  const client = await createClient();
 
   try {
     const { session } = await client.callback(params);

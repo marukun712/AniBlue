@@ -1,10 +1,12 @@
 import { getIronSession, IronSession } from "iron-session";
 import { Agent } from "@atproto/api";
-import { client } from "./client";
+import { createClient } from "./client";
 
 export type Session = { did: string };
 
 export async function getSessionAgent(req: Request): Promise<Agent | null> {
+  const client = await createClient();
+
   const response = new Response();
 
   const session: IronSession<Session> = await getIronSession<Session>(

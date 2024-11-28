@@ -8,6 +8,7 @@ export const createClient: () => Promise<NodeOAuthClient> = async () => {
 
   const url = isProduction ? publicUrl : "http://127.0.0.1:5173";
   const enc = encodeURIComponent;
+  console.log(url);
 
   return new NodeOAuthClient({
     clientMetadata: {

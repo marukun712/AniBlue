@@ -13,9 +13,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     "https://maril.pds.marukun-dev.com/.well-known/atproto-did"
   );
 
-  const json = await res.json();
+  const text = await res.text();
 
-  console.log(json);
+  console.log(text);
 
   const formData = await request.formData();
   const handle = formData.get("handle");

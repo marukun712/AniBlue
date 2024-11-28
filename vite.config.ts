@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { vercelPreset } from "@vercel/remix/vite";
 
-declare module "@remix-run/node" {
+declare module "@vercel/remix" {
   interface Future {
     v3_singleFetch: true;
   }

@@ -25,7 +25,7 @@ export default function EpisodeList({
               <span className="font-bold">この回まで視聴しています</span>
             )}
 
-            {prevState && (
+            {prevState?.status !== "pending" && prevState && (
               <Button
                 size="sm"
                 onClick={() => onEpisodeUpdate(episode.number_text ?? "")}

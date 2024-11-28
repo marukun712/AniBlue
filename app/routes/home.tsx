@@ -35,6 +35,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   } catch (e) {
     console.log("No favorite record found");
   }
+  console.log(statusData?.data.value, favoriteData?.data.value);
 
   return { status: statusData, favorite: favoriteData };
 };

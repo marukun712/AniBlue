@@ -58,7 +58,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
     //すでにお気に入りに登録されていれば削除
     if (favoriteState) {
       newState = favorite.filter((item) => {
-        item.id !== id;
+        return item.id !== id;
       });
 
       showToast(`お気に入りから削除しました`, "");

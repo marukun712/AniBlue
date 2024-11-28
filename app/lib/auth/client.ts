@@ -1,10 +1,14 @@
 import { NodeOAuthClient } from "@atproto/oauth-client-node";
 import { SessionStore, StateStore } from "./storage";
+import { isProduction } from "~/utils/isProduction";
 
 const createClient: () => Promise<NodeOAuthClient> = async () => {
-  const publicUrl = "";
-  const url = publicUrl || `http://127.0.0.1:5173`;
+  const publicUrl = isProduction
+    ? "https://aniblue.vercel.app/"
+    : "http://127.0.0.1:5173";
+  const url = publicUrl || "http://127.0.0.1:5173";
   const enc = encodeURIComponent;
+
   return new NodeOAuthClient({
     clientMetadata: {
       client_name: "aniblue",

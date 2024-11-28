@@ -1,4 +1,4 @@
-import { json } from "@remix-run/node";
+import { json } from "@vercel/remix";
 import { createClient } from "~/lib/auth/client";
 
 export async function loader() {

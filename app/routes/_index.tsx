@@ -17,6 +17,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       scope: "atproto transition:generic",
     });
 
+    const ac = new AbortController();
+    req.on("close", () => req.complete || ac.abort());
+
     return redirect(url.toString());
   }
 

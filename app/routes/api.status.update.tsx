@@ -4,6 +4,7 @@ import {
   isRecord,
   validateRecord,
 } from "~/generated/api/types/app/vercel/aniblue/status";
+import { StatusAgent } from "~/lib/agent/statusAgent";
 import { getSessionAgent } from "~/lib/auth/session";
 
 export const action: ActionFunction = async ({ request }) => {
@@ -12,14 +13,11 @@ export const action: ActionFunction = async ({ request }) => {
 
   const record = await request.json();
 
+  const statusAgent = new StatusAgent(agent);
+
   //バリデーション
   if (isRecord(record) && validateRecord(record)) {
-    await agent.com.atproto.repo.putRecord({
-      collection: "app.vercel.aniblue.status",
-      repo: agent.assertDid,
-      rkey: "self",
-      record,
-    });
+    await statusAgent.put(record, agent.assertDid);
 
     return json({ ok: true });
   }

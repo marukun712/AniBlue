@@ -44,6 +44,10 @@
         "episode_text": {
           "type": "string",
           "description": "Current number text of episode"
+        },
+        "favorite": {
+          "type": "boolean",
+          "description": "Favorite flag of the anime"
         }
       }
     }

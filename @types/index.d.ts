@@ -6,10 +6,7 @@ export type AnimeStatus = {
   thumbnail: string | null;
   status: Status;
   episode_text: string;
-};
-
-export type Favorite = {
-  id: string;
+  favorite: boolean;
 };
 
 interface WorkImages {

@@ -35,6 +35,8 @@ export interface Status {
   status: 'watching' | 'watched' | 'pending'
   /** Current number text of episode */
   episode_text: string
+  /** Favorite flag of the anime */
+  favorite?: boolean
   [k: string]: unknown
 }
 

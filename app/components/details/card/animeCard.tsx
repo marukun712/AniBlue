@@ -1,12 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 
 interface AnimeCardProps {
   id: string;
   title: string;
   image: string | null;
+  statusText?: string;
 }
 
-export function AnimeCard({ id, title, image }: AnimeCardProps) {
+export function AnimeCard({ id, title, image, statusText }: AnimeCardProps) {
   return (
     <Card className="group h-full bg-card hover:bg-accent/50 transition-colors">
       <a href={`/home/details?id=${id}`} className="block h-full">
@@ -24,6 +31,9 @@ export function AnimeCard({ id, title, image }: AnimeCardProps) {
             {title}
           </CardTitle>
         </CardContent>
+        <CardFooter>
+          <h1>{statusText}</h1>
+        </CardFooter>
       </a>
     </Card>
   );

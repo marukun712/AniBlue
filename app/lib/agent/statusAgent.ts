@@ -1,4 +1,4 @@
-import { Agent } from "@atproto/api";
+import { Agent, CredentialSession } from "@atproto/api";
 import { AppVercelAniblueNS } from "~/generated/api";
 import { Record } from "~/generated/api/types/app/vercel/aniblue/status";
 
@@ -8,6 +8,11 @@ export class StatusAgent extends Agent {
   constructor(options: ConstructorParameters<typeof Agent>[0]) {
     super(options);
     this.agent = new AppVercelAniblueNS(this);
+  }
+
+  static credential(serviceUrl: string = "https://public.api.bsky.app") {
+    const session = new CredentialSession(new URL(serviceUrl));
+    return new StatusAgent(session);
   }
 
   async get(did: string) {

@@ -7,6 +7,10 @@ export default function StatusList({
 }: {
   animeStatus: AnimeStatus[];
 }) {
+  const favorite = animeStatus.filter((item) => {
+    return item.favorite === true;
+  });
+
   const watching = animeStatus.filter((item) => {
     return item.status === "watching";
   });
@@ -21,6 +25,31 @@ export default function StatusList({
 
   return (
     <div className="space-y-12">
+      {favorite.length > 0 && (
+        <section className="space-y-4">
+          <h2 className="text-2xl font-semibold">お気に入り</h2>
+          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+            <div className="grid md:grid-cols-5 gap-8">
+              {favorite.map((item) => {
+                return (
+                  <AnimeCard
+                    key={item.id}
+                    id={item.id}
+                    title={item.title}
+                    image={item.thumbnail}
+                    statusText={
+                      item.episode_text
+                        ? `${item.episode_text}まで視聴しています`
+                        : ""
+                    }
+                  />
+                );
+              })}
+            </div>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
+        </section>
+      )}
       {watching.length > 0 && (
         <section className="space-y-4">
           <h2 className="text-2xl font-semibold">視聴中</h2>

@@ -7,6 +7,7 @@ import { StatusAgent } from "~/lib/agent/statusAgent";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { createIdResolver, getServiceEndpoint } from "~/lib/resolver";
 import { DidDocument } from "@atproto/identity";
+import { Share2 } from "lucide-react";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { handle } = params;
@@ -64,6 +65,24 @@ export default function ProfilePage() {
           <h2 className="text-2xl text-center font-bold">
             {profile.data.displayName}
           </h2>
+
+          <div className="text-center space-x-4">
+            <a
+              href={`https://bsky.app/profile/${profile.data.handle}`}
+              className="inline-block"
+            >
+              <img src="/bsky.png" alt="bsky" className="w-8"></img>
+            </a>
+
+            <a
+              href={`https://bsky.app/intent/compose?text=${encodeURIComponent(
+                "AniBlueで視聴ステータスを記録しました! #AniBlue url"
+              )}`}
+              className="inline-block"
+            >
+              <Share2 />
+            </a>
+          </div>
 
           <h2 className="text-center font-bold">{profile.data.description}</h2>
         </section>

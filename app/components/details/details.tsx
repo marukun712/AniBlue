@@ -30,6 +30,14 @@ export default function AnimeDetails({ work }: { work: Work }) {
       });
     };
 
+    const showErrorToast = (title: string, description: string) => {
+      toast({
+        title,
+        description,
+        variant: "destructive",
+      });
+    };
+
     const updateAnimeState = async (newState: AnimeStatus[]) => {
       // ローカルのstateを更新
       setAnimeState(newState);
@@ -47,13 +55,13 @@ export default function AnimeDetails({ work }: { work: Work }) {
       const json = await res.json();
 
       if (!json.ok) {
-        showToast("Error", "情報の更新に失敗しました");
+        showErrorToast("Error", "情報の更新に失敗しました");
       }
     };
 
     const toggleFavorite = async () => {
       if (!prevState) {
-        showToast("Error", "アニメの記録が見つかりません");
+        showErrorToast("Error", "アニメの記録が見つかりません");
         return;
       }
 
@@ -71,7 +79,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
           ""
         );
       } catch (error) {
-        showToast("Error", "お気に入りの更新に失敗しました");
+        showErrorToast("Error", "お気に入りの更新に失敗しました");
       }
     };
 
@@ -107,13 +115,11 @@ export default function AnimeDetails({ work }: { work: Work }) {
           case "watching":
             statusText = "視聴中";
             break;
-          default:
-            throw new Error("Invalid status");
         }
 
         showToast(`記録を${statusText}に更新しました✅`, "");
       } catch (error) {
-        showToast("Error", "ステータスの更新に失敗しました");
+        showErrorToast("Error", "ステータスの更新に失敗しました");
       }
     };
 
@@ -124,13 +130,13 @@ export default function AnimeDetails({ work }: { work: Work }) {
 
         showToast("記録が正常に削除されました。", "");
       } catch (error) {
-        showToast("Error", "記録の削除に失敗しました");
+        showErrorToast("Error", "記録の削除に失敗しました");
       }
     };
 
     const handleEpisodeUpdate = async (episodeText: string) => {
       if (!episodeText) {
-        showToast("Error", "話数を入力してください");
+        showErrorToast("Error", "話数を入力してください");
         return;
       }
 
@@ -145,7 +151,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
           `話数を${episodeText}に更新しました。`
         );
       } catch (error) {
-        showToast("Error", "話数の更新に失敗しました");
+        showErrorToast("Error", "話数の更新に失敗しました");
       }
     };
 

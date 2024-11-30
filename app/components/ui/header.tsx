@@ -1,11 +1,24 @@
-import { FormEvent } from "react";
-import { Input } from "./input";
+"use client";
+
+import { FormEvent, useState } from "react";
+import { Input } from "~/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { Form } from "@remix-run/react";
-import { LogOut } from "lucide-react";
+import { LogOut, User } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui//avatar";
+import { Button } from "~/components/ui/button";
+import { useProfile } from "~/state/profile";
 
 export function Header() {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
+  const profile = useProfile();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -17,21 +30,53 @@ export function Header() {
     }
   }
 
-  return (
-    <header className="bg-background border-b border-border">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <a href="/home/">
-          <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
-        </a>
-        <div className="flex md:w-1/4 w-1/2">
-          <Form onSubmit={handleSubmit} method="get">
-            <Input placeholder="アニメ名で検索...." name="title" />
-          </Form>
-          <a href="/logout/" className="px-5 py-2">
-            <LogOut />
+  if (profile)
+    return (
+      <header className="bg-background border-b border-border">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <a href="/home/">
+            <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
           </a>
+          <div className="flex items-center md:w-1/4 w-1/2">
+            <Form
+              onSubmit={handleSubmit}
+              method="get"
+              className="flex-grow mr-4"
+            >
+              <Input placeholder="アニメ名で検索...." name="title" />
+            </Form>
+            <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="relative h-8 w-8 rounded-full"
+                >
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage src={profile.avatar} alt="avatar" />
+                    <AvatarFallback>{profile.displayName}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuItem asChild>
+                  <a
+                    href={`/home/${profile.handle}`}
+                    className="flex items-center"
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    <span>プロフィール</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <a href="/logout" className="flex items-center text-red-600">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span>ログアウト</span>
+                  </a>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
-      </div>
-    </header>
-  );
+      </header>
+    );
 }

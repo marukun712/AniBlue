@@ -5,12 +5,15 @@ import { Header } from "~/components/ui/header";
 import { getSessionAgent } from "~/lib/auth/session";
 import { useSetAnimeState } from "~/state/status";
 import { StatusAgent } from "~/lib/agent/statusAgent";
+import { useSetProfile } from "~/state/profile";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const agent: Agent | null = await getSessionAgent(request);
   if (agent == null) return redirect("/");
-  const statusAgent = new StatusAgent(agent);
 
+  const profile = await agent.getProfile({ actor: agent.assertDid });
+
+  const statusAgent = new StatusAgent(agent);
   let status = null;
 
   try {
@@ -21,12 +24,17 @@ export const loader: LoaderFunction = async ({ request }) => {
     console.log("No status record found");
   }
 
-  return { status };
+  return { status, profile };
 };
 
 export default function Home() {
-  const { status } = useLoaderData<typeof loader>();
+  const { status, profile } = useLoaderData<typeof loader>();
   const setAnimeState = useSetAnimeState();
+  const setProfile = useSetProfile();
+
+  if (profile) {
+    setProfile(profile.data);
+  }
 
   if (status.value.status) {
     setAnimeState(status.value.status);

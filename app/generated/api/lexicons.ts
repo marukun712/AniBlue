@@ -4,9 +4,9 @@
 import { LexiconDoc, Lexicons } from '@atproto/lexicon'
 
 export const schemaDict = {
-  AppVercelAniblueStatus: {
+  AppNetlifyAniblueStatus: {
     lexicon: 1,
-    id: 'app.vercel.aniblue.status',
+    id: 'app.netlify.aniblue.status',
     defs: {
       main: {
         type: 'record',
@@ -20,7 +20,7 @@ export const schemaDict = {
               type: 'array',
               items: {
                 type: 'ref',
-                ref: 'lex:app.vercel.aniblue.status#status',
+                ref: 'lex:app.netlify.aniblue.status#status',
               },
             },
           },
@@ -63,4 +63,4 @@ export const schemaDict = {
 
 export const schemas = Object.values(schemaDict)
 export const lexicons: Lexicons = new Lexicons(schemas)
-export const ids = { AppVercelAniblueStatus: 'app.vercel.aniblue.status' }
+export const ids = { AppNetlifyAniblueStatus: 'app.netlify.aniblue.status' }

@@ -1,6 +1,6 @@
 {
   "lexicon": 1,
-  "id": "app.vercel.aniblue.status",
+  "id": "app.netlify.aniblue.status",
   "defs": {
     "main": {
       "type": "record",

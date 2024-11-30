@@ -4,9 +4,9 @@
 import { XrpcClient, FetchHandler, FetchHandlerOptions } from '@atproto/xrpc'
 import { schemas } from './lexicons'
 import { CID } from 'multiformats/cid'
-import * as AppVercelAniblueStatus from './types/app/vercel/aniblue/status'
+import * as AppNetlifyAniblueStatus from './types/app/netlify/aniblue/status'
 
-export * as AppVercelAniblueStatus from './types/app/vercel/aniblue/status'
+export * as AppNetlifyAniblueStatus from './types/app/netlify/aniblue/status'
 
 export class AtpBaseClient extends XrpcClient {
   app: AppNS
@@ -24,25 +24,25 @@ export class AtpBaseClient extends XrpcClient {
 
 export class AppNS {
   _client: XrpcClient
-  vercel: AppVercelNS
+  netlify: AppNetlifyNS
 
   constructor(client: XrpcClient) {
     this._client = client
-    this.vercel = new AppVercelNS(client)
+    this.netlify = new AppNetlifyNS(client)
   }
 }
 
-export class AppVercelNS {
+export class AppNetlifyNS {
   _client: XrpcClient
-  aniblue: AppVercelAniblueNS
+  aniblue: AppNetlifyAniblueNS
 
   constructor(client: XrpcClient) {
     this._client = client
-    this.aniblue = new AppVercelAniblueNS(client)
+    this.aniblue = new AppNetlifyAniblueNS(client)
   }
 }
 
-export class AppVercelAniblueNS {
+export class AppNetlifyAniblueNS {
   _client: XrpcClient
   status: StatusRecord
 
@@ -63,10 +63,10 @@ export class StatusRecord {
     params: Omit<ComAtprotoRepoListRecords.QueryParams, 'collection'>,
   ): Promise<{
     cursor?: string
-    records: { uri: string; value: AppVercelAniblueStatus.Record }[]
+    records: { uri: string; value: AppNetlifyAniblueStatus.Record }[]
   }> {
     const res = await this._client.call('com.atproto.repo.listRecords', {
-      collection: 'app.vercel.aniblue.status',
+      collection: 'app.netlify.aniblue.status',
       ...params,
     })
     return res.data
@@ -77,10 +77,10 @@ export class StatusRecord {
   ): Promise<{
     uri: string
     cid: string
-    value: AppVercelAniblueStatus.Record
+    value: AppNetlifyAniblueStatus.Record
   }> {
     const res = await this._client.call('com.atproto.repo.getRecord', {
-      collection: 'app.vercel.aniblue.status',
+      collection: 'app.netlify.aniblue.status',
       ...params,
     })
     return res.data
@@ -91,15 +91,15 @@ export class StatusRecord {
       ComAtprotoRepoCreateRecord.InputSchema,
       'collection' | 'record'
     >,
-    record: AppVercelAniblueStatus.Record,
+    record: AppNetlifyAniblueStatus.Record,
     headers?: Record<string, string>,
   ): Promise<{ uri: string; cid: string }> {
-    record.$type = 'app.vercel.aniblue.status'
+    record.$type = 'app.netlify.aniblue.status'
     const res = await this._client.call(
       'com.atproto.repo.createRecord',
       undefined,
       {
-        collection: 'app.vercel.aniblue.status',
+        collection: 'app.netlify.aniblue.status',
         rkey: 'self',
         ...params,
         record,
@@ -116,7 +116,7 @@ export class StatusRecord {
     await this._client.call(
       'com.atproto.repo.deleteRecord',
       undefined,
-      { collection: 'app.vercel.aniblue.status', ...params },
+      { collection: 'app.netlify.aniblue.status', ...params },
       { headers },
     )
   }

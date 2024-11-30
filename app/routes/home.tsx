@@ -36,7 +36,7 @@ export default function Home() {
     setProfile(profile.data);
   }
 
-  if (status.value.status) {
+  if (status?.value?.status) {
     setAnimeState(status.value.status);
   } else {
     setAnimeState([]);

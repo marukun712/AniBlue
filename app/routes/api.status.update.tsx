@@ -3,7 +3,7 @@ import { ActionFunction, json } from "@remix-run/node";
 import {
   isRecord,
   validateRecord,
-} from "~/generated/api/types/app/vercel/aniblue/status";
+} from "~/generated/api/types/app/netlify/aniblue/status";
 import { StatusAgent } from "~/lib/agent/statusAgent";
 import { getSessionAgent } from "~/lib/auth/session";
 

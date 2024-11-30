@@ -47,7 +47,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          $type: "app.vercel.aniblue.status",
+          $type: "app.netlify.aniblue.status",
           status: newState,
         }),
       });

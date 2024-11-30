@@ -15,13 +15,13 @@ export function isRecord(v: unknown): v is Record {
   return (
     isObj(v) &&
     hasProp(v, '$type') &&
-    (v.$type === 'app.vercel.aniblue.status#main' ||
-      v.$type === 'app.vercel.aniblue.status')
+    (v.$type === 'app.netlify.aniblue.status#main' ||
+      v.$type === 'app.netlify.aniblue.status')
   )
 }
 
 export function validateRecord(v: unknown): ValidationResult {
-  return lexicons.validate('app.vercel.aniblue.status#main', v)
+  return lexicons.validate('app.netlify.aniblue.status#main', v)
 }
 
 export interface Status {
@@ -44,10 +44,10 @@ export function isStatus(v: unknown): v is Status {
   return (
     isObj(v) &&
     hasProp(v, '$type') &&
-    v.$type === 'app.vercel.aniblue.status#status'
+    v.$type === 'app.netlify.aniblue.status#status'
   )
 }
 
 export function validateStatus(v: unknown): ValidationResult {
-  return lexicons.validate('app.vercel.aniblue.status#status', v)
+  return lexicons.validate('app.netlify.aniblue.status#status', v)
 }

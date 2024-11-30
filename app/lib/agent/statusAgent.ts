@@ -1,13 +1,13 @@
 import { Agent, CredentialSession } from "@atproto/api";
-import { AppVercelAniblueNS } from "~/generated/api";
-import { Record } from "~/generated/api/types/app/vercel/aniblue/status";
+import { AppNetlifyAniblueNS } from "~/generated/api";
+import { Record } from "~/generated/api/types/app/netlify/aniblue/status";
 
 export class StatusAgent extends Agent {
-  agent: AppVercelAniblueNS;
+  agent: AppNetlifyAniblueNS;
 
   constructor(options: ConstructorParameters<typeof Agent>[0]) {
     super(options);
-    this.agent = new AppVercelAniblueNS(this);
+    this.agent = new AppNetlifyAniblueNS(this);
   }
 
   static credential(serviceUrl: string = "https://public.api.bsky.app") {
@@ -24,7 +24,7 @@ export class StatusAgent extends Agent {
 
   async put(record: Record, did: string) {
     return await this.com.atproto.repo.putRecord({
-      collection: "app.vercel.aniblue.status",
+      collection: "app.netlify.aniblue.status",
       repo: did,
       rkey: "self",
       record,

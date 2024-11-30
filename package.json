@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix vite:build",
+    "build": "prisma generate && remix vite:build",
     "dev": "remix vite:dev",
     "start": "netlify serve",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
@@ -31,6 +31,7 @@
     "clsx": "^2.1.1",
     "isbot": "^4.1.0",
     "lucide-react": "^0.461.0",
+    "netlify-cli": "^17.37.2",
     "prisma": "^5.22.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

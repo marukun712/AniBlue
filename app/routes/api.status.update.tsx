@@ -1,5 +1,5 @@
 import { Agent } from "@atproto/api";
-import { ActionFunction, json } from "@vercel/remix";
+import { ActionFunction, json } from "@remix-run/node";
 import {
   isRecord,
   validateRecord,

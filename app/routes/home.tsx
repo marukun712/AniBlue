@@ -1,5 +1,5 @@
 import { Agent } from "@atproto/api";
-import { LoaderFunction, redirect } from "@vercel/remix";
+import { LoaderFunction, redirect } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import { Header } from "~/components/ui/header";
 import { getSessionAgent } from "~/lib/auth/session";

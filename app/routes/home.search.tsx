@@ -1,4 +1,4 @@
-import { LoaderFunction } from "@vercel/remix";
+import { LoaderFunction } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { Work } from "@types";
 import { AnimeCard } from "~/components/details/card/animeCard";

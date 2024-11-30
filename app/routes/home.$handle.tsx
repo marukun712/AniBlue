@@ -1,6 +1,6 @@
 import { Agent } from "@atproto/api";
 import { useLoaderData } from "@remix-run/react";
-import { LoaderFunction, redirect } from "@vercel/remix";
+import { LoaderFunction, redirect } from "@remix-run/node";
 import { getSessionAgent } from "~/lib/auth/session";
 import StatusList from "~/components/home/statusList";
 import { StatusAgent } from "~/lib/agent/statusAgent";

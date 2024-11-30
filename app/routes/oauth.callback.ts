@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "@vercel/remix";
+import { LoaderFunctionArgs, redirect } from "@remix-run/node";
 import { createClient } from "~/lib/auth/client";
 import { commitSession, getSession } from "~/sessions";
 

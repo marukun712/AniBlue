@@ -29,7 +29,6 @@
     "@vercel/remix": "^2.15.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "iron-session": "^8.0.4",
     "isbot": "^4.1.0",
     "lucide-react": "^0.461.0",
     "prisma": "^5.22.0",

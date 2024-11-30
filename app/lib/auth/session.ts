@@ -1,30 +1,18 @@
-import { getIronSession, IronSession } from "iron-session";
 import { Agent } from "@atproto/api";
+import { getSession } from "~/sessions";
 import { createClient } from "./client";
 
-export type Session = { did: string };
-
 export async function getSessionAgent(req: Request): Promise<Agent | null> {
+  const session = await getSession(req.headers.get("Cookie"));
   const client = await createClient();
 
-  const response = new Response();
+  if (!session.data.did) return null;
 
-  const session: IronSession<Session> = await getIronSession<Session>(
-    req,
-    response,
-    {
-      cookieName: "session",
-      password: process.env.SESSION_SECRET!,
-    }
-  );
-
-  if (!session.did) return null;
   try {
-    const oauthSession = await client.restore(session.did);
+    const oauthSession = await client.restore(session.data.did);
     return oauthSession ? new Agent(oauthSession) : null;
   } catch (err) {
     console.warn({ err }, "oauth restore failed");
-    await session.destroy();
     return null;
   }
 }

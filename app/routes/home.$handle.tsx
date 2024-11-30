@@ -1,6 +1,6 @@
 import { Agent } from "@atproto/api";
 import { useLoaderData } from "@remix-run/react";
-import { LoaderFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
 import { getSessionAgent } from "~/lib/auth/session";
 import StatusList from "~/components/home/statusList";
 import { StatusAgent } from "~/lib/agent/statusAgent";
@@ -8,6 +8,10 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { createIdResolver, getServiceEndpoint } from "~/lib/resolver";
 import { DidDocument } from "@atproto/identity";
 import { Share2 } from "lucide-react";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "ユーザー詳細ページ | AniBlue" }];
+};
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { handle } = params;

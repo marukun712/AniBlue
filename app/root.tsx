@@ -7,7 +7,7 @@ import {
   ScrollRestoration,
   useRouteError,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 
 import stylesheet from "~/tailwind.css?url";
 import fontstyle from "~/font.css?url";
@@ -20,6 +20,21 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   { rel: "stylesheet", href: fontstyle },
 ];
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: "AniBlue | AT Protocolのアニメ視聴管理ツール" },
+    {
+      property: "og:title",
+      content: "AniBlue",
+    },
+    {
+      name: "description",
+      content:
+        "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。",
+    },
+  ];
+};
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

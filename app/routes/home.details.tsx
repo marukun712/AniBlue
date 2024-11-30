@@ -1,6 +1,10 @@
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import AnimeDetails from "~/components/details/details";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "アニメ詳細 | AniBlue" }];
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);

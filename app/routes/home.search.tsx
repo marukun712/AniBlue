@@ -1,8 +1,12 @@
-import { LoaderFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { Work } from "@types";
 import { AnimeCard } from "~/components/details/card/animeCard";
 import { Button } from "~/components/ui/button";
+
+export const meta: MetaFunction = () => {
+  return [{ title: "検索結果 | AniBlue" }];
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);

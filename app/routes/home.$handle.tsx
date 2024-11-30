@@ -10,7 +10,13 @@ import { DidDocument } from "@atproto/identity";
 import { Share2 } from "lucide-react";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "ユーザー詳細ページ | AniBlue" }];
+  return [
+    { title: "ユーザー情報 | AniBlue" },
+    {
+      property: "og:title",
+      content: "ユーザー情報  | AniBlue",
+    },
+  ];
 };
 
 export const loader: LoaderFunction = async ({ request, params }) => {

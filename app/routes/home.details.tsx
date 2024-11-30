@@ -3,7 +3,13 @@ import { useLoaderData } from "@remix-run/react";
 import AnimeDetails from "~/components/details/details";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "アニメ詳細 | AniBlue" }];
+  return [
+    { title: "アニメ情報 | AniBlue" },
+    {
+      property: "og:title",
+      content: "アニメ情報 | AniBlue",
+    },
+  ];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {

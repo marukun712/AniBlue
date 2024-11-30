@@ -29,6 +29,11 @@ export const meta: MetaFunction = () => {
       content: "AniBlue",
     },
     {
+      property: "og:description",
+      content:
+        "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。",
+    },
+    {
       name: "description",
       content:
         "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。",

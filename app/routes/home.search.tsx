@@ -5,7 +5,13 @@ import { AnimeCard } from "~/components/details/card/animeCard";
 import { Button } from "~/components/ui/button";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "検索結果 | AniBlue" }];
+  return [
+    { title: "検索結果 | AniBlue" },
+    {
+      property: "og:title",
+      content: "検索結果 | AniBlue",
+    },
+  ];
 };
 
 export const loader: LoaderFunction = async ({ request }) => {

@@ -1,5 +1,4 @@
-import { Agent } from "@atproto/api";
-import { ActionFunction, json } from "@remix-run/node";
+import { ActionFunction } from "@remix-run/node";
 import {
   isRecord,
   validateRecord,
@@ -8,8 +7,8 @@ import { StatusAgent } from "~/lib/agent/statusAgent";
 import { getSessionAgent } from "~/lib/auth/session";
 
 export const action: ActionFunction = async ({ request }) => {
-  const agent: Agent | null = await getSessionAgent(request);
-  if (agent == null) return json(null);
+  const agent = await getSessionAgent(request);
+  if (agent == null) return null;
 
   const record = await request.json();
 
@@ -19,8 +18,8 @@ export const action: ActionFunction = async ({ request }) => {
   if (isRecord(record) && validateRecord(record)) {
     await statusAgent.put(record, agent.assertDid);
 
-    return json({ ok: true });
+    return { ok: true };
   }
 
-  return json({ ok: false });
+  return { ok: false };
 };

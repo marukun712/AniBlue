@@ -1,83 +1,45 @@
-import { Button } from "~/components/ui/button";
-import { Card, CardContent } from "~/components/ui/card";
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
-import { createClient } from "~/lib/auth/client";
-import { Form, useActionData } from "@remix-run/react";
-import { Input } from "~/components/ui/input";
-import { LogIn } from "lucide-react";
-import { Toaster } from "~/components/ui/toaster";
-import { useToast } from "~/hooks/use-toast";
-import { useEffect } from "react";
+import StatusList from "~/components/home/statusList";
+import { LoaderFunction, redirect } from "@remix-run/node";
+import { getSessionAgent } from "~/lib/auth/session";
+import { StatusAgent } from "~/lib/agent/statusAgent";
+import { useLoaderData } from "@remix-run/react";
+import Main from "~/components/main";
 
-export const action = async ({ request }: ActionFunctionArgs) => {
-  const client = await createClient();
-  const formData = await request.formData();
-  const handle = formData.get("handle")?.toString().trim();
-
-  if (!handle) {
-    return { error: "ハンドルを入力してください" };
-  }
+export const loader: LoaderFunction = async ({ request }) => {
+  const agent = await getSessionAgent(request);
+  if (agent == null) return redirect("/login");
 
   try {
-    const url = await client.authorize(handle, {
-      scope: "atproto transition:generic",
-    });
-    return redirect(url.toString());
-  } catch (e) {
-    return {
-      error: "ログインに失敗しました。ハンドルが正しいかご確認ください。",
-    };
+    const statusAgent = new StatusAgent(agent);
+    const status = await statusAgent.get(agent.assertDid);
+
+    return { status };
+  } catch {
+    return { error: "データの取得に失敗しました。" };
   }
 };
 
-export default function Index() {
-  const { toast } = useToast();
-  const actionData = useActionData<typeof action>();
+export default function Home() {
+  const { status, error } = useLoaderData<typeof loader>();
 
-  useEffect(() => {
-    if (actionData?.error) {
-      toast({
-        title: "Error",
-        description: actionData.error,
-        variant: "destructive",
-      });
-    }
-  }, [actionData?.error, toast]);
+  if (error) {
+    return (
+      <Main>
+        <div className="text-center font-bold text-2xl">{error}</div>
+      </Main>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <Toaster />
-
-      <Card className="md:w-1/3 rounded-lg shadow-lg">
-        <CardContent className="p-6 space-y-8">
-          <h1 className="text-2xl font-bold">AniBlue</h1>
-          <h1>
-            AniBlueは、アニメの視聴記録を行うことができるツールです。
-            <br />
-            視聴記録は、すべてユーザーのPDSに保存されます。
-          </h1>
-
-          <h1 className="text-2xl font-bold">BlueSkyアカウントでログイン</h1>
-
-          <Form method="post">
-            <div>
-              <Input
-                type="text"
-                name="handle"
-                id="handle"
-                placeholder="Enter your handle"
-                className="w-full p-2 rounded"
-                required
-              />
-            </div>
-
-            <Button type="submit" className="my-8 w-full font-semibold rounded">
-              <LogIn />
-              Login
-            </Button>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+    <Main>
+      {status && status.value.status.length > 0 ? (
+        <StatusList animeStatus={status.value.status} />
+      ) : (
+        <div className="text-center font-bold text-2xl">
+          記録されている情報がありません。
+          右上の検索バーから、アニメ名を検索してみましょう。
+        </div>
+      )}
+    </Main>
   );
 }

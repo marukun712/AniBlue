@@ -16,7 +16,7 @@ interface AnimeCardProps {
 export function AnimeCard({ id, title, image, statusText }: AnimeCardProps) {
   return (
     <Card className="group h-full bg-card hover:bg-accent/50 transition-colors">
-      <a href={`/home/details?id=${id}`} className="block h-full">
+      <a href={`/details?id=${id}`} className="block h-full">
         <CardHeader className="p-0">
           <div className="aspect-video relative">
             <img

@@ -1,8 +1,11 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { Work } from "@types";
 import { AnimeCard } from "~/components/details/card/animeCard";
+import Main from "~/components/main";
 import { Button } from "~/components/ui/button";
+import { AnnictAPI } from "~/lib/annict/annict";
+import { getSessionAgent } from "~/lib/auth/session";
 
 export const meta: MetaFunction = () => {
   return [
@@ -23,28 +26,19 @@ export const loader: LoaderFunction = async ({ request }) => {
     return { error: "検索ワードが指定されていません。" };
   }
 
-  try {
-    const res = await fetch(
-      `https://api.annict.com/v1/works?filter_title=${title}${
-        page ? `&page=${page}` : ""
-      }`,
-      {
-        headers: {
-          Authorization: "bearer " + process.env.ANNICT_TOKEN,
-        },
-      }
-    );
-    const result = await res.json();
-    return { result };
-  } catch (e) {
-    return {
-      error: "データの取得に失敗しました",
-    };
-  }
+  const agent = await getSessionAgent(request);
+  if (agent == null) return redirect("/login");
+
+  const annict = new AnnictAPI(process.env.ANNICT_TOKEN!);
+
+  const { result, error } = await annict.search(title, page);
+
+  return { result, error };
 };
 
 export default function Search() {
   const { result, error } = useLoaderData<typeof loader>();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handlePageChange = (newPage: number) => {
@@ -57,7 +51,7 @@ export default function Search() {
 
   if (!error && result)
     return (
-      <div>
+      <Main>
         <div className="grid md:grid-cols-5 gap-8">
           {result.works.map((item: Work["data"]) => {
             return (
@@ -82,14 +76,14 @@ export default function Search() {
             </Button>
           )}
         </div>
-      </div>
+      </Main>
     );
 
   return (
-    <section className="space-y-4">
+    <Main>
       <h2 className="text-2xl text-center font-bold">
         {error ?? "検索結果が見つかりませんでした。"}
       </h2>
-    </section>
+    </Main>
   );
 }

@@ -13,10 +13,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     session.set("did", oauthSession.did);
 
-    return redirect("/home", {
+    return redirect("/", {
       headers: { "Set-Cookie": await commitSession(session) },
     });
-  } catch (error) {
-    return redirect("/");
+  } catch {
+    return redirect("/login");
   }
 }

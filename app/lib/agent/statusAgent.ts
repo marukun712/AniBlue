@@ -16,25 +16,37 @@ export class StatusAgent extends Agent {
   }
 
   async get(did: string) {
-    return await this.agent.status.get({
-      repo: did,
-      rkey: "self",
-    });
+    try {
+      return await this.agent.status.get({
+        repo: did,
+        rkey: "self",
+      });
+    } catch {
+      return null;
+    }
   }
 
   async put(record: Record, did: string) {
-    return await this.com.atproto.repo.putRecord({
-      collection: "app.netlify.aniblue.status",
-      repo: did,
-      rkey: "self",
-      record,
-    });
+    try {
+      return await this.com.atproto.repo.putRecord({
+        collection: "app.netlify.aniblue.status",
+        repo: did,
+        rkey: "self",
+        record,
+      });
+    } catch {
+      return null;
+    }
   }
 
   async delete(did: string) {
-    return await this.agent.status.delete({
-      repo: did,
-      rkey: "self",
-    });
+    try {
+      return await this.agent.status.delete({
+        repo: did,
+        rkey: "self",
+      });
+    } catch {
+      return null;
+    }
   }
 }

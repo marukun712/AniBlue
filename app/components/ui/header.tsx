@@ -1,5 +1,3 @@
-"use client";
-
 import { FormEvent, useState } from "react";
 import { Input } from "~/components/ui/input";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +24,7 @@ export function Header() {
     const title = form.get("title");
 
     if (title) {
-      navigate(`/home/search?title=${title}`);
+      navigate(`/search?title=${title}`);
     }
   }
 
@@ -34,7 +32,7 @@ export function Header() {
     return (
       <header className="bg-background border-b border-border">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/home/">
+          <a href="/">
             <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
           </a>
           <div className="flex items-center md:w-1/4 w-1/2">
@@ -59,10 +57,7 @@ export function Header() {
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuItem asChild>
-                  <a
-                    href={`/home/${profile.handle}`}
-                    className="flex items-center"
-                  >
+                  <a href={`/${profile.handle}`} className="flex items-center">
                     <User className="mr-2 h-4 w-4" />
                     <span>プロフィール</span>
                   </a>

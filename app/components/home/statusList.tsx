@@ -2,119 +2,61 @@ import { AnimeStatus } from "@types";
 import { AnimeCard } from "~/components/details/card/animeCard";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 
+const StatusSection = ({
+  title,
+  items,
+  showEpisode = false,
+}: {
+  title: string;
+  items: AnimeStatus[];
+  showEpisode?: boolean;
+}) => {
+  if (items.length === 0) return null;
+
+  return (
+    <section className="space-y-4">
+      <h2 className="text-2xl font-semibold">{title}</h2>
+      <ScrollArea className="w-full rounded-md border">
+        <div className="flex p-4">
+          <div className="flex gap-4">
+            {items.map((item) => (
+              <div className="w-[250px] flex-none" key={item.id}>
+                <AnimeCard
+                  id={item.id}
+                  title={item.title}
+                  image={item.thumbnail}
+                  statusText={
+                    showEpisode && item.episode_text
+                      ? `${item.episode_text}まで視聴しています`
+                      : undefined
+                  }
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+    </section>
+  );
+};
+
 export default function StatusList({
   animeStatus,
 }: {
   animeStatus: AnimeStatus[];
 }) {
-  const favorite = animeStatus.filter((item) => {
-    return item.favorite === true;
-  });
-
-  const watching = animeStatus.filter((item) => {
-    return item.status === "watching";
-  });
-
-  const pending = animeStatus.filter((item) => {
-    return item.status === "pending";
-  });
-
-  const watched = animeStatus.filter((item) => {
-    return item.status === "watched";
-  });
+  const favorite = animeStatus.filter((item) => item.favorite === true);
+  const watching = animeStatus.filter((item) => item.status === "watching");
+  const pending = animeStatus.filter((item) => item.status === "pending");
+  const watched = animeStatus.filter((item) => item.status === "watched");
 
   return (
     <div className="space-y-12">
-      {favorite.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">お気に入り</h2>
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-            <div className="grid md:grid-cols-5 gap-8">
-              {favorite.map((item) => {
-                return (
-                  <AnimeCard
-                    key={item.id}
-                    id={item.id}
-                    title={item.title}
-                    image={item.thumbnail}
-                    statusText={
-                      item.episode_text
-                        ? `${item.episode_text}まで視聴しています`
-                        : ""
-                    }
-                  />
-                );
-              })}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </section>
-      )}
-      {watching.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">視聴中</h2>
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-            <div className="grid md:grid-cols-5 gap-8">
-              {watching.map((item) => {
-                return (
-                  <AnimeCard
-                    key={item.id}
-                    id={item.id}
-                    title={item.title}
-                    image={item.thumbnail}
-                    statusText={
-                      item.episode_text
-                        ? `${item.episode_text}まで視聴しています`
-                        : ""
-                    }
-                  />
-                );
-              })}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </section>
-      )}
-      {pending.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">見たい</h2>
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-            <div className="grid md:grid-cols-5 gap-8">
-              {pending.map((item) => {
-                return (
-                  <AnimeCard
-                    key={item.id}
-                    id={item.id}
-                    title={item.title}
-                    image={item.thumbnail}
-                  />
-                );
-              })}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </section>
-      )}
-      {watched.length > 0 && (
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">視聴済み</h2>
-          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-            <div className="grid md:grid-cols-5 gap-8">
-              {watched.map((item) => {
-                return (
-                  <AnimeCard
-                    key={item.id}
-                    id={item.id}
-                    title={item.title}
-                    image={item.thumbnail}
-                  />
-                );
-              })}
-            </div>
-            <ScrollBar orientation="horizontal" />
-          </ScrollArea>
-        </section>
-      )}
+      <StatusSection title="お気に入り" items={favorite} showEpisode={true} />
+      <StatusSection title="視聴中" items={watching} showEpisode={true} />
+      <StatusSection title="見たい" items={pending} />
+      <StatusSection title="視聴済み" items={watched} />
     </div>
   );
 }

@@ -21,7 +21,7 @@ export class StatusAgent extends Agent {
         repo: did,
         rkey: "self",
       });
-    } catch {
+    } catch (e) {
       return null;
     }
   }
@@ -34,7 +34,7 @@ export class StatusAgent extends Agent {
         rkey: "self",
         record,
       });
-    } catch {
+    } catch (e) {
       return null;
     }
   }
@@ -45,7 +45,7 @@ export class StatusAgent extends Agent {
         repo: did,
         rkey: "self",
       });
-    } catch {
+    } catch (e) {
       return null;
     }
   }

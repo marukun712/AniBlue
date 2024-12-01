@@ -9,16 +9,6 @@ import { DidDocument } from "@atproto/identity";
 import { Share2 } from "lucide-react";
 import Main from "~/components/main";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "ユーザー情報 | AniBlue" },
-    {
-      property: "og:title",
-      content: "ユーザー情報  | AniBlue",
-    },
-  ];
-};
-
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { handle } = params;
 
@@ -48,6 +38,22 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   } catch (e) {
     return { error: "ユーザーが見つかりませんでした。" };
   }
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const user = data.profile.data.displayName;
+
+  if (user) {
+    return [
+      { title: `${user}さんのプロフィール | AniBlue` },
+      { property: "og:title", content: `${user}さんのプロフィール | AniBlue` },
+    ];
+  }
+
+  return [
+    { title: `ユーザー情報 | AniBlue` },
+    { property: "og:title", content: `ユーザー情報 | AniBlue` },
+  ];
 };
 
 export default function ProfilePage() {

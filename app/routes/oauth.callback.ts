@@ -16,7 +16,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     return redirect("/", {
       headers: { "Set-Cookie": await commitSession(session) },
     });
-  } catch {
+  } catch (e) {
     return redirect("/login");
   }
 }

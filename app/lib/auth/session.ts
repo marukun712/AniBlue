@@ -11,8 +11,8 @@ export async function getSessionAgent(req: Request): Promise<Agent | null> {
   try {
     const oauthSession = await client.restore(session.data.did);
     return oauthSession ? new Agent(oauthSession) : null;
-  } catch (err) {
-    console.warn({ err }, "oauth restore failed");
+  } catch (e) {
+    console.warn({ e }, "oauth restore failed");
     return null;
   }
 }

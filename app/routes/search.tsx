@@ -7,16 +7,6 @@ import { Button } from "~/components/ui/button";
 import { AnnictAPI } from "~/lib/annict/annict";
 import { getSessionAgent } from "~/lib/auth/session";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "検索結果 | AniBlue" },
-    {
-      property: "og:title",
-      content: "検索結果 | AniBlue",
-    },
-  ];
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const title = url.searchParams.get("title");
@@ -33,7 +23,23 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const { result, error } = await annict.search(title, page);
 
-  return { result, error };
+  return { result, error, title };
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const title = data.title;
+
+  if (title) {
+    return [
+      { title: `${title} の検索結果 | AniBlue` },
+      { property: "og:title", content: `${title} の検索結果 | AniBlue` },
+    ];
+  }
+
+  return [
+    { title: `検索結果 | AniBlue` },
+    { property: "og:title", content: `検索結果 | AniBlue` },
+  ];
 };
 
 export default function Search() {
@@ -49,7 +55,15 @@ export default function Search() {
     });
   };
 
-  if (!error && result)
+  if (error) {
+    return (
+      <Main>
+        <h2 className="text-2xl text-center font-bold">{error}</h2>
+      </Main>
+    );
+  }
+
+  if (result.works.length > 0)
     return (
       <Main>
         <div className="grid md:grid-cols-5 gap-8">
@@ -82,7 +96,7 @@ export default function Search() {
   return (
     <Main>
       <h2 className="text-2xl text-center font-bold">
-        {error ?? "検索結果が見つかりませんでした。"}
+        検索結果が見つかりませんでした。
       </h2>
     </Main>
   );

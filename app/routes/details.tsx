@@ -7,16 +7,6 @@ import { AnnictAPI } from "~/lib/annict/annict";
 import { getSessionAgent } from "~/lib/auth/session";
 import { useSetAnimeState } from "~/state/status";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "アニメ情報 | AniBlue" },
-    {
-      property: "og:title",
-      content: "アニメ情報 | AniBlue",
-    },
-  ];
-};
-
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
@@ -36,6 +26,22 @@ export const loader: LoaderFunction = async ({ request }) => {
   const { work, error } = await annict.getDetails(id);
 
   return { work, status, error };
+};
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const title = data.work.data.title;
+
+  if (title) {
+    return [
+      { title: `${title} | AniBlue` },
+      { property: "og:title", content: `${title} | AniBlue` },
+    ];
+  }
+
+  return [
+    { title: `アニメ情報 | AniBlue` },
+    { property: "og:title", content: `アニメ情報 | AniBlue` },
+  ];
 };
 
 export default function WorkDetail() {

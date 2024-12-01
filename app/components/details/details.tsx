@@ -78,7 +78,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
             : `お気に入りに追加しました✅`,
           ""
         );
-      } catch (error) {
+      } catch (e) {
         showErrorToast("Error", "お気に入りの更新に失敗しました");
       }
     };
@@ -118,7 +118,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
         }
 
         showToast(`記録を${statusText}に更新しました✅`, "");
-      } catch (error) {
+      } catch (e) {
         showErrorToast("Error", "ステータスの更新に失敗しました");
       }
     };
@@ -129,7 +129,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
         await updateAnimeState(newState);
 
         showToast("記録が正常に削除されました。", "");
-      } catch (error) {
+      } catch (e) {
         showErrorToast("Error", "記録の削除に失敗しました");
       }
     };
@@ -150,7 +150,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
           "話数を更新しました✅",
           `話数を${episodeText}に更新しました。`
         );
-      } catch (error) {
+      } catch (e) {
         showErrorToast("Error", "話数の更新に失敗しました");
       }
     };
@@ -158,6 +158,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
     return (
       <div className="container mx-auto px-4 py-8">
         <Toaster />
+
         {imageUrl && (
           <img
             src={imageUrl}

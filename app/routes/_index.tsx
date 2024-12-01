@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     const status = await statusAgent.get(agent.assertDid);
 
     return { status };
-  } catch {
+  } catch (e) {
     return { error: "データの取得に失敗しました。" };
   }
 };

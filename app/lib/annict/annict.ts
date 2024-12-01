@@ -1,3 +1,5 @@
+import { Work } from "@types";
+
 export class AnnictAPI {
   token: string;
 
@@ -26,7 +28,7 @@ export class AnnictAPI {
     }
   }
 
-  async getDetails(id: string) {
+  async getDetails(id: string): Promise<{ work?: Work; error?: string }> {
     try {
       // 作品データの取得
       const workRes = await fetch(
@@ -80,7 +82,7 @@ export class AnnictAPI {
           staffs: staffsData.staffs,
         },
       };
-    } catch (error) {
+    } catch (e) {
       return {
         error: "データの取得に失敗しました",
       };

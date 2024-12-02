@@ -1,7 +1,7 @@
 export const generateMetadata = (title: string, imageUrl?: string) => {
   const fullTitle = `${title} | AniBlue`;
   const description =
-    "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。";
+    "AniBlueは、アニメの視聴記録を管理することができるWebアプリです。視聴記録は、すべてユーザーのPDSに保存されます。";
 
   const metadata = [
     { title: fullTitle },

@@ -44,6 +44,9 @@ export default function AnimeDetails({ work }: { work: Work }) {
     };
 
     const updateAnimeState = async (newState: AnimeStatus[]) => {
+      // ローカルのstateを更新
+      setAnimeState(newState);
+
       // PDS側の更新
       const res = await fetch("/api/status/update", {
         method: "POST",
@@ -59,9 +62,6 @@ export default function AnimeDetails({ work }: { work: Work }) {
       if (!json.ok) {
         throw new Error("情報の更新に失敗しました");
       }
-
-      // ローカルのstateを更新
-      setAnimeState(newState);
     };
 
     const toggleFavorite = async () => {

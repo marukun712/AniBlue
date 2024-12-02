@@ -85,7 +85,8 @@ export default function ProfilePage() {
 
           <a
             href={`https://bsky.app/intent/compose?text=${encodeURIComponent(
-              `AniBlueで視聴ステータスを記録しました! #AniBlue https://aniblue.netlify.app/${handle}`
+              `AniBlueでステータスを記録しました! #AniBlue 
+              https://aniblue.netlify.app/${handle}`
             )}`}
             className="inline-block"
           >
@@ -97,7 +98,11 @@ export default function ProfilePage() {
       </section>
 
       {status && status.value.status.length > 0 && (
-        <StatusList animeStatus={status.value.status} />
+        <div>
+          <h1 className="text-center py-2">record uri : {status.uri}</h1>
+
+          <StatusList animeStatus={status.value.status} />
+        </div>
       )}
     </Main>
   );

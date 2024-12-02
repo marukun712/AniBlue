@@ -1,6 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
-import { getSessionAgent } from "~/lib/auth/session";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import StatusList from "~/components/home/statusList";
 import { StatusAgent } from "~/lib/agent/statusAgent";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
@@ -9,14 +8,15 @@ import { DidDocument } from "@atproto/identity";
 import { Share2 } from "lucide-react";
 import Main from "~/components/main";
 import { generateMetadata } from "~/lib/meta";
+import { Agent } from "@atproto/api";
 
-export const loader: LoaderFunction = async ({ request, params }) => {
+export const loader: LoaderFunction = async ({ params }) => {
   const { handle } = params;
 
-  const agent = await getSessionAgent(request);
-  if (agent == null) return redirect("/login");
-
   if (!handle) return { error: "ハンドルを指定してください。" };
+
+  //public Agentを作成
+  const agent = new Agent("https://public.api.bsky.app");
 
   try {
     //ハンドルからDidDocumentを取得

@@ -2,7 +2,7 @@ import { FormEvent, useState } from "react";
 import { Input } from "~/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { Form } from "@remix-run/react";
-import { LogOut, User } from "lucide-react";
+import { LogIn, LogOut, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,21 +28,18 @@ export function Header() {
     }
   }
 
-  if (profile)
-    return (
-      <header className="bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <a href="/">
-            <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
-          </a>
-          <div className="flex items-center md:w-1/4 w-1/2">
-            <Form
-              onSubmit={handleSubmit}
-              method="get"
-              className="flex-grow mr-4"
-            >
-              <Input placeholder="アニメ名で検索...." name="title" />
-            </Form>
+  return (
+    <header className="bg-background border-b border-border">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <a href="/">
+          <h1 className="text-2xl font-bold text-foreground">AniBlue</h1>
+        </a>
+        <div className="flex items-center md:w-1/4 w-1/2">
+          <Form onSubmit={handleSubmit} method="get" className="flex-grow mr-4">
+            <Input placeholder="アニメ名で検索...." name="title" />
+          </Form>
+
+          {profile ? (
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -70,8 +67,13 @@ export function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </div>
+          ) : (
+            <a href="/login">
+              <LogIn />
+            </a>
+          )}
         </div>
-      </header>
-    );
+      </div>
+    </header>
+  );
 }

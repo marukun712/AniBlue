@@ -1,4 +1,4 @@
-import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import AnimeDetails from "~/components/details/details";
 import Main from "~/components/main";
@@ -16,17 +16,20 @@ export const loader: LoaderFunction = async ({ request }) => {
     return { error: "作品IDが指定されていません" };
   }
 
-  const agent = await getSessionAgent(request);
-  if (agent == null) return redirect("/login");
-
-  const statusAgent = new StatusAgent(agent);
-  const status = await statusAgent.get(agent.assertDid);
-
   const annict = new AnnictAPI(process.env.ANNICT_TOKEN!);
 
   const { work, error } = await annict.getDetails(id);
 
-  return { work, status, error };
+  const agent = await getSessionAgent(request);
+
+  if (agent) {
+    const statusAgent = new StatusAgent(agent);
+    const status = await statusAgent.get(agent.assertDid);
+
+    return { work, status, error };
+  }
+
+  return { work, error };
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {

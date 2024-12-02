@@ -10,10 +10,15 @@ import EpisodeList from "./list/episodeList";
 import CastList from "./list/castList";
 import StaffList from "./list/staffList";
 import AnimeInfo from "./card/animeInfo";
+import { useProfile } from "~/state/profile";
 
 export default function AnimeDetails({ work }: { work: Work }) {
   const animeState = useAnimeState();
   const setAnimeState = useSetAnimeState();
+
+  //ログイン状態の判定
+  const isLogin = useProfile() ? true : false;
+
   const { toast } = useToast();
 
   if (work.data) {
@@ -39,10 +44,7 @@ export default function AnimeDetails({ work }: { work: Work }) {
     };
 
     const updateAnimeState = async (newState: AnimeStatus[]) => {
-      // ローカルのstateを更新
-      setAnimeState(newState);
-
-      // PDS側も更新
+      // PDS側の更新
       const res = await fetch("/api/status/update", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -55,8 +57,11 @@ export default function AnimeDetails({ work }: { work: Work }) {
       const json = await res.json();
 
       if (!json.ok) {
-        showErrorToast("Error", "情報の更新に失敗しました");
+        throw new Error("情報の更新に失敗しました");
       }
+
+      // ローカルのstateを更新
+      setAnimeState(newState);
     };
 
     const toggleFavorite = async () => {
@@ -179,55 +184,57 @@ export default function AnimeDetails({ work }: { work: Work }) {
               </span>
             </div>
 
-            <div className="md:flex md:space-x-4 md:space-y-0 space-y-6 mb-8">
-              <StatusButton
-                icon={<Star className="w-4 h-4" />}
-                label="見たい"
-                status="pending"
-                isActive={prevState?.status === "pending"}
-                onClick={() => handleStatusUpdate("pending")}
-              />
-              <StatusButton
-                icon={<Eye className="w-4 h-4" />}
-                label="視聴中"
-                status="watching"
-                isActive={prevState?.status === "watching"}
-                onClick={() => handleStatusUpdate("watching")}
-              />
-              <StatusButton
-                icon={<Check className="w-4 h-4" />}
-                label="視聴済み"
-                status="watched"
-                isActive={prevState?.status === "watched"}
-                onClick={() => handleStatusUpdate("watched")}
-              />
+            {isLogin && (
+              <div className="md:flex md:space-x-4 md:space-y-0 space-y-6 mb-8">
+                <StatusButton
+                  icon={<Star className="w-4 h-4" />}
+                  label="見たい"
+                  status="pending"
+                  isActive={prevState?.status === "pending"}
+                  onClick={() => handleStatusUpdate("pending")}
+                />
+                <StatusButton
+                  icon={<Eye className="w-4 h-4" />}
+                  label="視聴中"
+                  status="watching"
+                  isActive={prevState?.status === "watching"}
+                  onClick={() => handleStatusUpdate("watching")}
+                />
+                <StatusButton
+                  icon={<Check className="w-4 h-4" />}
+                  label="視聴済み"
+                  status="watched"
+                  isActive={prevState?.status === "watched"}
+                  onClick={() => handleStatusUpdate("watched")}
+                />
 
-              {prevState && (
-                <Button
-                  variant="outline"
-                  className="flex items-center space-x-2 bg-red-500"
-                  onClick={handleStatusRemove}
-                >
-                  <Trash className="w-4 h-4" />
-                  <span>記録を消去</span>
-                </Button>
-              )}
+                {prevState && (
+                  <Button
+                    variant="outline"
+                    className="flex items-center space-x-2 bg-red-500"
+                    onClick={handleStatusRemove}
+                  >
+                    <Trash className="w-4 h-4" />
+                    <span>記録を消去</span>
+                  </Button>
+                )}
 
-              {prevState && (
-                <Button
-                  variant="outline"
-                  className={
-                    prevState?.favorite
-                      ? "flex items-center space-x-2 bg-yellow-500"
-                      : "flex items-center space-x-2"
-                  }
-                  onClick={toggleFavorite}
-                >
-                  <Heart className="w-4 h-4" />
-                  <span>お気に入り</span>
-                </Button>
-              )}
-            </div>
+                {prevState && (
+                  <Button
+                    variant="outline"
+                    className={
+                      prevState?.favorite
+                        ? "flex items-center space-x-2 bg-yellow-500"
+                        : "flex items-center space-x-2"
+                    }
+                    onClick={toggleFavorite}
+                  >
+                    <Heart className="w-4 h-4" />
+                    <span>お気に入り</span>
+                  </Button>
+                )}
+              </div>
+            )}
 
             <Tabs defaultValue="episodes" className="w-full">
               <TabsList>

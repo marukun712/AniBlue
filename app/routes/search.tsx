@@ -1,11 +1,10 @@
-import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { useLoaderData, useSearchParams } from "@remix-run/react";
 import { Work } from "@types";
 import { AnimeCard } from "~/components/details/card/animeCard";
 import Main from "~/components/main";
 import { Button } from "~/components/ui/button";
 import { AnnictAPI } from "~/lib/annict/annict";
-import { getSessionAgent } from "~/lib/auth/session";
 import { generateMetadata } from "~/lib/meta";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -16,9 +15,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   if (!title) {
     return { error: "検索ワードが指定されていません。" };
   }
-
-  const agent = await getSessionAgent(request);
-  if (agent == null) return redirect("/login");
 
   const annict = new AnnictAPI(process.env.ANNICT_TOKEN!);
 

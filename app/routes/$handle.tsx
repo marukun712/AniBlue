@@ -8,6 +8,7 @@ import { createIdResolver, getServiceEndpoint } from "~/lib/resolver";
 import { DidDocument } from "@atproto/identity";
 import { Share2 } from "lucide-react";
 import Main from "~/components/main";
+import { generateMetadata } from "~/lib/meta";
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const { handle } = params;
@@ -42,18 +43,13 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const user = data.profile.data.displayName;
+  const handle = data.profile.data.handle;
 
-  if (user) {
-    return [
-      { title: `${user}さんのプロフィール | AniBlue` },
-      { property: "og:title", content: `${user}さんのプロフィール | AniBlue` },
-    ];
+  if (user && handle) {
+    return generateMetadata(`${user}さんのプロフィール`);
   }
 
-  return [
-    { title: `ユーザー情報 | AniBlue` },
-    { property: "og:title", content: `ユーザー情報 | AniBlue` },
-  ];
+  return generateMetadata(`ユーザー情報`);
 };
 
 export default function ProfilePage() {

@@ -1,6 +1,6 @@
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { createClient } from "~/lib/auth/client";
 import { Form, useActionData } from "@remix-run/react";
 import { Input } from "~/components/ui/input";
@@ -8,6 +8,11 @@ import { LogIn } from "lucide-react";
 import { Toaster } from "~/components/ui/toaster";
 import { useToast } from "~/hooks/use-toast";
 import { useEffect } from "react";
+import { generateMetadata } from "~/lib/meta";
+
+export const meta: MetaFunction = () => {
+  return generateMetadata("ログイン");
+};
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const client = await createClient();

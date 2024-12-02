@@ -6,6 +6,7 @@ import Main from "~/components/main";
 import { Button } from "~/components/ui/button";
 import { AnnictAPI } from "~/lib/annict/annict";
 import { getSessionAgent } from "~/lib/auth/session";
+import { generateMetadata } from "~/lib/meta";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -30,16 +31,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const title = data.title;
 
   if (title) {
-    return [
-      { title: `${title} の検索結果 | AniBlue` },
-      { property: "og:title", content: `${title} の検索結果 | AniBlue` },
-    ];
+    return generateMetadata(`${title} の検索結果`);
   }
 
-  return [
-    { title: `検索結果 | AniBlue` },
-    { property: "og:title", content: `検索結果 | AniBlue` },
-  ];
+  return generateMetadata(`検索結果`);
 };
 
 export default function Search() {

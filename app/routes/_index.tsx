@@ -1,9 +1,14 @@
 import StatusList from "~/components/home/statusList";
-import { LoaderFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
 import { getSessionAgent } from "~/lib/auth/session";
 import { StatusAgent } from "~/lib/agent/statusAgent";
 import { useLoaderData } from "@remix-run/react";
 import Main from "~/components/main";
+import { generateMetadata } from "~/lib/meta";
+
+export const meta: MetaFunction = () => {
+  return generateMetadata("AniBlue");
+};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const agent = await getSessionAgent(request);

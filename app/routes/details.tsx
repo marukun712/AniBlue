@@ -5,6 +5,7 @@ import Main from "~/components/main";
 import { StatusAgent } from "~/lib/agent/statusAgent";
 import { AnnictAPI } from "~/lib/annict/annict";
 import { getSessionAgent } from "~/lib/auth/session";
+import { generateMetadata } from "~/lib/meta";
 import { useSetAnimeState } from "~/state/status";
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -32,16 +33,10 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const title = data.work.data.title;
 
   if (title) {
-    return [
-      { title: `${title} | AniBlue` },
-      { property: "og:title", content: `${title} | AniBlue` },
-    ];
+    return generateMetadata(title);
   }
 
-  return [
-    { title: `アニメ情報 | AniBlue` },
-    { property: "og:title", content: `アニメ情報 | AniBlue` },
-  ];
+  return generateMetadata("アニメ情報");
 };
 
 export default function WorkDetail() {

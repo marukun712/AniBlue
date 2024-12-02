@@ -8,11 +8,7 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import type {
-  LinksFunction,
-  LoaderFunction,
-  MetaFunction,
-} from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@remix-run/node";
 import { RecoilRoot } from "recoil";
 import NotFound from "./components/ui/404";
 import ErrorPage from "./components/ui/errorPage";
@@ -26,26 +22,6 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
   { rel: "stylesheet", href: fontstyle },
 ];
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "AniBlue | AT Protocolのアニメ視聴管理ツール" },
-    {
-      property: "og:title",
-      content: "AniBlue",
-    },
-    {
-      property: "og:description",
-      content:
-        "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。",
-    },
-    {
-      name: "description",
-      content:
-        "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。",
-    },
-  ];
-};
 
 export const loader: LoaderFunction = async ({ request }) => {
   const agent = await getSessionAgent(request);

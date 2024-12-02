@@ -1,5 +1,5 @@
 export const generateMetadata = (title: string, imageUrl?: string) => {
-  const fullTitle = `${title} | AT Protocolのアニメ視聴管理ツール`;
+  const fullTitle = `${title} | AniBlue`;
   const description =
     "AniBlueは、アニメの視聴記録を行うことができるツールです。視聴記録は、すべてユーザーのPDSに保存されます。";
 

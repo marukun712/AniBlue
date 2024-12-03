@@ -14,7 +14,15 @@ export const generateMetadata = (title: string, imageUrl?: string) => {
   ];
 
   if (imageUrl) {
-    metadata.push({ property: "og:image", content: imageUrl });
+    metadata.push({
+      property: "og:image",
+      content: `https://aniblue.netlify.app/${imageUrl}`,
+    });
+  } else {
+    metadata.push({
+      property: "og:image",
+      content: `https://aniblue.netlify.app/ogp.png`,
+    });
   }
 
   return metadata;

@@ -46,7 +46,7 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const handle = data.profile.data.handle;
 
   if (user && handle) {
-    return generateMetadata(`${user}さんのプロフィール`);
+    return generateMetadata(`${user}さんのプロフィール`, `/api/og${handle}`);
   }
 
   return generateMetadata(`ユーザー情報`);

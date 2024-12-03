@@ -1,7 +1,7 @@
 import satori from "satori";
 import { LoaderFunctionArgs } from "@remix-run/node";
-import { getSessionAgent } from "~/lib/auth/session";
 import sharp from "sharp";
+import { Agent } from "@atproto/api";
 
 async function fetchFont() {
   const res = await fetch(
@@ -124,16 +124,18 @@ function createImageResponse(buffer: Buffer): Response {
   });
 }
 
-export async function loader({ request, params }: LoaderFunctionArgs) {
+export async function loader({ params }: LoaderFunctionArgs) {
   try {
     const { handle } = params;
-    const agent = await getSessionAgent(request);
 
-    if (!agent || !handle) {
-      return new Response(null, { status: 401 });
+    if (!handle) {
+      return new Response(null, { status: 400 });
     }
 
+    const agent = new Agent("https://public.api.bsky.app");
+
     const profile = await agent.getProfile({ actor: handle });
+
     if (!profile) {
       return new Response(null, { status: 404 });
     }

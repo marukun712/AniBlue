@@ -1,10 +1,28 @@
 import satori from "satori";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { getSessionAgent } from "~/lib/auth/session";
-import fs from "fs";
 import sharp from "sharp";
 
+async function fetchFont() {
+  const res = await fetch(
+    "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap"
+  );
+  const css = await res.text();
+  const resource = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  )?.[1];
+
+  if (!resource) {
+    throw new Error("Failed to fetch font");
+  }
+
+  const fontRes = await fetch(resource);
+  return await fontRes.arrayBuffer();
+}
+
 async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
+  const fontData = await fetchFont();
+
   const svg = await satori(
     <div
       style={{
@@ -85,9 +103,9 @@ async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
       fonts: [
         {
           name: "Noto Sans JP",
-          data: fs.readFileSync("/fonts/NotoSansJP-Regular.ttf"),
+          data: fontData,
           weight: 700,
-          style: "normal" as const,
+          style: "normal",
         },
       ],
     }

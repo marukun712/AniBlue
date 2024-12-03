@@ -1,12 +1,10 @@
 import satori from "satori";
-import { Resvg } from "@resvg/resvg-js";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import { getSessionAgent } from "~/lib/auth/session";
 import fs from "fs";
+import sharp from "sharp";
 
-const fontData = fs.readFileSync("./public/fonts/NotoSansJP-Regular.ttf");
-
-export async function generateOgImage(text: string, avatar: string) {
+async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
   const svg = await satori(
     <div
       style={{
@@ -35,16 +33,18 @@ export async function generateOgImage(text: string, avatar: string) {
             gap: "24px",
           }}
         >
-          <img
-            src={avatar}
-            alt="avatar"
-            style={{
-              width: "120px",
-              height: "120px",
-              borderRadius: "50%",
-              objectFit: "cover",
-            }}
-          />
+          {avatar && (
+            <img
+              src={avatar}
+              alt="avatar"
+              style={{
+                width: "120px",
+                height: "120px",
+                borderRadius: "50%",
+                objectFit: "cover",
+              }}
+            />
+          )}
           <div
             style={{
               fontSize: "72px",
@@ -85,36 +85,50 @@ export async function generateOgImage(text: string, avatar: string) {
       fonts: [
         {
           name: "Noto Sans JP",
-          data: fontData,
+          data: fs.readFileSync("./public/fonts/NotoSansJP-Regular.ttf"),
           weight: 700,
-          style: "normal",
+          style: "normal" as const,
         },
       ],
     }
   );
 
-  const resvg = new Resvg(svg);
-  const pngBuffer = resvg.render().asPng();
-  return pngBuffer;
+  const svgBuffer = Buffer.from(svg);
+  return sharp(svgBuffer).png().toBuffer();
+}
+
+function createImageResponse(buffer: Buffer): Response {
+  return new Response(buffer, {
+    headers: {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
+  });
 }
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
-  const { handle } = params;
-  const agent = await getSessionAgent(request);
+  try {
+    const { handle } = params;
+    const agent = await getSessionAgent(request);
 
-  if (agent && handle) {
-    const profile = await agent?.getProfile({ actor: handle });
+    if (!agent || !handle) {
+      return new Response(null, { status: 401 });
+    }
+
+    const profile = await agent.getProfile({ actor: handle });
+    if (!profile) {
+      return new Response(null, { status: 404 });
+    }
+
     const pngBuffer = await generateOgImage(
-      profile.data.displayName! + "のプロフィール",
-      profile.data.avatar!
+      `${profile.data.displayName}のプロフィール`,
+      profile.data.avatar
     );
-    return new Response(pngBuffer, {
-      headers: {
-        "Content-Type": "image/png",
-        "Cache-Control": "public, max-age=31536000, immutable",
-      },
-    });
-  }
 
-  return "";
+    return createImageResponse(pngBuffer);
+  } catch (e) {
+    console.error(e);
+
+    return new Response(null, { status: 500 });
+  }
 }

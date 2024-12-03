@@ -8,7 +8,7 @@ import { getSessionAgent } from "~/lib/auth/session";
 
 export const action: ActionFunction = async ({ request }) => {
   const agent = await getSessionAgent(request);
-  if (agent == null) return { ok: false };
+  if (agent == null) return new Response(null, { status: 401 });
 
   const record = await request.json();
 
@@ -21,5 +21,5 @@ export const action: ActionFunction = async ({ request }) => {
     return { ok: true };
   }
 
-  return { ok: false };
+  return new Response(null, { status: 500 });
 };

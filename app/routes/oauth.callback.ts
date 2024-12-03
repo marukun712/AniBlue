@@ -17,6 +17,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
       headers: { "Set-Cookie": await commitSession(session) },
     });
   } catch (e) {
+    console.error(e);
+
     return redirect("/login");
   }
 }

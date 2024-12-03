@@ -27,6 +27,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     });
     return redirect(url.toString());
   } catch (e) {
+    console.error(e);
+
     return {
       error: "ログインに失敗しました。ハンドルが正しいかご確認ください。",
     };

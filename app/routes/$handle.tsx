@@ -37,18 +37,23 @@ export const loader: LoaderFunction = async ({ params }) => {
 
     return { profile, status, handle };
   } catch (e) {
+    console.error(e);
+
     return { error: "ユーザーが見つかりませんでした。" };
   }
 };
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
-  const user = data.profile.data.displayName;
-  const handle = data.profile.data.handle;
+  if (data.error) {
+    return generateMetadata(data.error);
+  } else if (data.data) {
+    const user = data.profile.data.displayName;
+    const handle = data.profile.data.handle;
 
-  if (user && handle) {
-    return generateMetadata(`${user}さんのプロフィール`, `/api/og${handle}`);
+    if (user && handle) {
+      return generateMetadata(`${user}さんのプロフィール`, `/api/og${handle}`);
+    }
   }
-
   return generateMetadata(`ユーザー情報`);
 };
 

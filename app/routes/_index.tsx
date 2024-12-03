@@ -20,6 +20,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 
     return { status };
   } catch (e) {
+    console.error(e);
+
     return { error: "データの取得に失敗しました。" };
   }
 };

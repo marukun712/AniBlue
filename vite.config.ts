@@ -23,7 +23,4 @@ export default defineConfig({
     netlifyPlugin(),
     tsconfigPaths(),
   ],
-  optimizeDeps: {
-    exclude: ["@resvg/resvg-js"],
-  },
 });

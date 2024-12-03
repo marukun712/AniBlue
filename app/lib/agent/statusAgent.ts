@@ -22,6 +22,7 @@ export class StatusAgent extends Agent {
         rkey: "self",
       });
     } catch (e) {
+      console.error(e);
       return null;
     }
   }
@@ -35,6 +36,7 @@ export class StatusAgent extends Agent {
         record,
       });
     } catch (e) {
+      console.error(e);
       return null;
     }
   }
@@ -46,6 +48,7 @@ export class StatusAgent extends Agent {
         rkey: "self",
       });
     } catch (e) {
+      console.error(e);
       return null;
     }
   }

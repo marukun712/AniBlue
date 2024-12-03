@@ -85,7 +85,7 @@ async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
       fonts: [
         {
           name: "Noto Sans JP",
-          data: fs.readFileSync("./fonts/NotoSansJP-Regular.ttf"),
+          data: fs.readFileSync("/fonts/NotoSansJP-Regular.ttf"),
           weight: 700,
           style: "normal" as const,
         },

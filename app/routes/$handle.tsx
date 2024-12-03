@@ -46,12 +46,12 @@ export const loader: LoaderFunction = async ({ params }) => {
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (data.error) {
     return generateMetadata(data.error);
-  } else if (data.data) {
+  } else if (data) {
     const user = data.profile.data.displayName;
     const handle = data.profile.data.handle;
 
     if (user && handle) {
-      return generateMetadata(`${user}さんのプロフィール`, `/api/og/${handle}`);
+      return generateMetadata(`${user}さんのプロフィール`, `api/og/${handle}`);
     }
   }
   return generateMetadata(`ユーザー情報`);

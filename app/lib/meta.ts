@@ -16,12 +16,12 @@ export const generateMetadata = (title: string, imageUrl?: string) => {
   if (imageUrl) {
     metadata.push({
       property: "og:image",
-      content: `https://aniblue.netlify.app/${imageUrl}`,
+      content: `https://aniblue.vercel.app/${imageUrl}`,
     });
   } else {
     metadata.push({
       property: "og:image",
-      content: `https://aniblue.netlify.app/ogp.png`,
+      content: `https://aniblue.vercel.app/ogp.png`,
     });
   }
 

@@ -141,7 +141,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
 
     const pngBuffer = await generateOgImage(
-      `${profile.data.displayName}のプロフィール`,
+      `${profile.data.displayName}の視聴しているアニメ`,
       profile.data.avatar
     );
 

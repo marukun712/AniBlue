@@ -7,12 +7,32 @@
 import { PassThrough } from "node:stream";
 
 import type { AppLoadContext, EntryContext } from "@remix-run/node";
-import { createReadableStreamFromReadable } from "@remix-run/node";
+import {
+  createReadableStreamFromReadable,
+  installGlobals,
+} from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { isbot } from "isbot";
 import { renderToPipeableStream } from "react-dom/server";
 
 const ABORT_DELAY = 5_000;
+
+//なんか
+function installAndLockGlobals() {
+  installGlobals({ nativeFetch: true });
+
+  if (!("getSetCookie" in Headers.prototype)) {
+    Object.defineProperty(Headers.prototype, "getSetCookie", {
+      value: function () {
+        return this.get("Set-Cookie") ? [this.get("Set-Cookie")] : [];
+      },
+      writable: false,
+      configurable: false,
+    });
+  }
+}
+
+installAndLockGlobals();
 
 export default function handleRequest(
   request: Request,

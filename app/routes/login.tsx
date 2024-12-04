@@ -9,6 +9,7 @@ import { Toaster } from "~/components/ui/toaster";
 import { useToast } from "~/hooks/use-toast";
 import { useEffect } from "react";
 import { generateMetadata } from "~/lib/meta";
+import { Agent } from "@atproto/api";
 
 export const meta: MetaFunction = () => {
   return generateMetadata("ログイン");
@@ -21,8 +22,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (!handle) {
     return { error: "ハンドルを入力してください" };
   }
+
+  //無理やりハンドルを解決
+  const agent = new Agent("https://public.api.bsky.app");
+
+  const did = await agent.resolveHandle({ handle });
+
   try {
-    const url = await client.authorize(handle, {
+    const url = await client.authorize(did.data.did!, {
       scope: "atproto transition:generic",
     });
     return redirect(url.toString());

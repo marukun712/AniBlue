@@ -9,6 +9,7 @@ import { Toaster } from "~/components/ui/toaster";
 import { useToast } from "~/hooks/use-toast";
 import { useEffect } from "react";
 import { generateMetadata } from "~/lib/meta";
+import { createIdResolver } from "~/lib/resolver";
 
 export const meta: MetaFunction = () => {
   return generateMetadata("ログイン");
@@ -22,8 +23,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return { error: "ハンドルを入力してください" };
   }
 
+  const resolver = createIdResolver();
+  const did = await resolver.handle.resolve(handle);
+
   try {
-    const url = await client.authorize(handle, {
+    const url = await client.authorize(did!, {
       scope: "atproto transition:generic",
     });
     return redirect(url.toString());

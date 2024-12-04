@@ -3,12 +3,15 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { vercelPreset } from "@vercel/remix/vite";
 
+declare module "@vercel/remix" {
+  interface Future {
+    v3_singleFetch: true;
+  }
+}
+
 export default defineConfig({
   build: {
     target: ["es2022", "edge89", "firefox89", "chrome89", "safari15"],
-  },
-  server: {
-    host: "127.0.0.1",
   },
   plugins: [
     remix({
@@ -19,8 +22,9 @@ export default defineConfig({
         v3_lazyRouteDiscovery: true,
         v3_singleFetch: true,
       },
+      presets: [vercelPreset()],
     }),
-    vercelPreset(),
+
     tsconfigPaths(),
   ],
 });

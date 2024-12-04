@@ -1,7 +1,8 @@
 import { createClient } from "~/lib/auth/client";
+import { json } from "@vercel/remix";
 
 export async function loader() {
   const client = await createClient();
 
-  return Response.json(client.clientMetadata);
+  return json(client.clientMetadata);
 }

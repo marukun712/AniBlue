@@ -1,5 +1,5 @@
 import { useLoaderData } from "@remix-run/react";
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@vercel/remix";
 import StatusList from "~/components/home/statusList";
 import { StatusAgent } from "~/lib/agent/statusAgent";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";

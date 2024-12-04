@@ -1,6 +1,6 @@
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
-import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
+import { ActionFunctionArgs, MetaFunction, redirect } from "@vercel/remix";
 import { createClient } from "~/lib/auth/client";
 import { Form, useActionData, useNavigation } from "@remix-run/react";
 import { Input } from "~/components/ui/input";

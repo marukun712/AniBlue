@@ -1,4 +1,4 @@
-import { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction } from "@vercel/remix";
 import { useLoaderData } from "@remix-run/react";
 import AnimeDetails from "~/components/details/details";
 import Main from "~/components/main";

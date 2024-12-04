@@ -1,5 +1,5 @@
 import satori from "satori";
-import { LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@vercel/remix";
 import sharp from "sharp";
 import { Agent } from "@atproto/api";
 

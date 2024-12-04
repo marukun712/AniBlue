@@ -8,7 +8,7 @@ import {
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
-import type { LinksFunction, LoaderFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunction } from "@vercel/remix";
 import { RecoilRoot } from "recoil";
 import NotFound from "./components/ui/404";
 import ErrorPage from "./components/ui/errorPage";

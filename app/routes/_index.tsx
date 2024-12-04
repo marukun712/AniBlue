@@ -1,5 +1,5 @@
 import StatusList from "~/components/home/statusList";
-import { LoaderFunction, MetaFunction, redirect } from "@remix-run/node";
+import { LoaderFunction, MetaFunction, redirect } from "@vercel/remix";
 import { getSessionAgent } from "~/lib/auth/session";
 import { StatusAgent } from "~/lib/agent/statusAgent";
 import { useLoaderData } from "@remix-run/react";

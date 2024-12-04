@@ -1,4 +1,4 @@
-import { ActionFunction } from "@remix-run/node";
+import { ActionFunction } from "@vercel/remix";
 import {
   isRecord,
   validateRecord,

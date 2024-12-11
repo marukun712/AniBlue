@@ -93,8 +93,7 @@ export default function ProfilePage() {
 
           <a
             href={`https://bsky.app/intent/compose?text=${encodeURIComponent(
-              `AniBlueでステータスを記録しました! #AniBlue 
-              https://aniblue.netlify.app/${handle}`
+              `AniBlueでステータスを記録しました! #AniBlue https://aniblue.netlify.app/${handle}`
             )}`}
             className="inline-block"
           >

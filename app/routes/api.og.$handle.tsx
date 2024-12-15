@@ -2,11 +2,24 @@ import satori from "satori";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import sharp from "sharp";
 import { Agent } from "@atproto/api";
-import fs from "fs";
 
-const fontData = fs.readFileSync("/fonts/notosansjp-bold.ttf");
-
+async function fetchFont() {
+  const res = await fetch(
+    "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap"
+  );
+  const css = await res.text();
+  const resource = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  )?.[1];
+  if (!resource) {
+    throw new Error("Failed to fetch font");
+  }
+  const fontRes = await fetch(resource);
+  return await fontRes.arrayBuffer();
+}
 async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
+  const fontData = await fetchFont();
+
   const styles = {
     container: {
       height: "100%",

@@ -2,99 +2,80 @@ import satori from "satori";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import sharp from "sharp";
 import { Agent } from "@atproto/api";
+import fs from "fs";
 
-async function fetchFont() {
-  const res = await fetch(
-    "https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap"
-  );
-  const css = await res.text();
-  const resource = css.match(
-    /src: url\((.+)\) format\('(opentype|truetype)'\)/
-  )?.[1];
-
-  if (!resource) {
-    throw new Error("Failed to fetch font");
-  }
-
-  const fontRes = await fetch(resource);
-  return await fontRes.arrayBuffer();
-}
+const fontData = fs.readFileSync("./fonts/NotoSansJP-Bold.ttf");
 
 async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
-  const fontData = await fetchFont();
+  const styles = {
+    container: {
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      backgroundColor: "#ffffff",
+      position: "relative",
+      padding: "40px",
+    },
+    content: {
+      flex: 1,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "60px",
+      maxWidth: "1500px",
+      margin: "0 auto",
+    },
+    textContainer: {
+      display: "flex",
+      alignItems: "center",
+      gap: "32px",
+      maxWidth: "800px",
+    },
+    avatar: {
+      width: "120px",
+      height: "120px",
+      borderRadius: "60px",
+      objectFit: "cover",
+    },
+    text: {
+      fontSize: "64px",
+      fontWeight: "bold",
+      color: "#1a202c",
+      lineHeight: "1.2",
+      letterSpacing: "-0.02em",
+      textAlign: "left",
+      wordBreak: "break-word",
+    },
+    footer: {
+      position: "absolute",
+      bottom: "40px",
+      right: "40px",
+      display: "flex",
+      alignItems: "center",
+      gap: "12px",
+      padding: "12px 24px",
+      backgroundColor: "rgba(37, 99, 235, 0.1)",
+      borderRadius: "99px",
+    },
+    brand: {
+      fontSize: "32px",
+      fontWeight: "bold",
+      color: "#2563eb",
+      letterSpacing: "-0.01em",
+    },
+  };
 
   const svg = await satori(
-    <div
-      style={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "#fff",
-        position: "relative",
-      }}
-    >
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "60px",
-          gap: "24px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "24px",
-          }}
-        >
-          {avatar && (
-            <img
-              src={avatar}
-              alt="avatar"
-              style={{
-                width: "120px",
-                height: "120px",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
-            />
-          )}
-          <div
-            style={{
-              fontSize: "72px",
-              fontWeight: "bold",
-              color: "#1a202c",
-              textAlign: "left",
-              wordBreak: "break-word",
-            }}
-          >
-            {text}
-          </div>
+    <div style={styles.container}>
+      <div style={styles.content}>
+        <div style={styles.textContainer}>
+          {avatar && <img src={avatar} alt="avatar" style={styles.avatar} />}
+          <div style={styles.text}>{text}</div>
         </div>
       </div>
-      <div
-        style={{
-          position: "absolute",
-          bottom: "40px",
-          right: "100px",
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-        }}
-      >
-        <div
-          style={{
-            fontSize: "36px",
-            fontWeight: "bold",
-            color: "#2563eb",
-          }}
-        >
-          AniBlue
-        </div>
+      <div style={styles.footer}>
+        <div style={styles.brand}>AniBlue</div>
       </div>
     </div>,
     {

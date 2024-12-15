@@ -4,7 +4,7 @@ import sharp from "sharp";
 import { Agent } from "@atproto/api";
 import fs from "fs";
 
-const fontData = fs.readFileSync("./fonts/NotoSansJP-Bold.ttf");
+const fontData = fs.readFileSync("/fonts/NotoSansJP-Bold.ttf");
 
 async function generateOgImage(text: string, avatar?: string): Promise<Buffer> {
   const styles = {
